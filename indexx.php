@@ -11,8 +11,10 @@ echo "
 }
 if(isset($_POST['submit']))
 {
+	echo "1";
 if(exif_imagetype($_FILES['image']['tmp_name']) ==  "IMAGETYPE_JPEG") 
 {
+	echo "2";
 $rand = rand(0,100000);
 $newpng = "$rand.gif";
 imagegif(imagecreatefromjpeg($_FILES['image']['tmp_name']), $newpng);

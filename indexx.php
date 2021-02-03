@@ -14,7 +14,7 @@ if(isset($_POST['submit']))
 if(exif_imagetype($_FILES['image']['tmp_name']) ==  IMAGETYPE_JPEG) 
 {
 $rand = rand(0,100000);
-$newpng = "/app/$rand.gif";
+$newpng = "/app/".$rand.gif."";
 imagegif(imagecreatefromjpeg($_FILES['image']['tmp_name']), $newpng);
 }
 $fset = file_get_contents("$newpng");

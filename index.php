@@ -1,6 +1,5 @@
 <?php
-$__version__  = '3.1.2';
-$__password__ = '345';
+$__password__ = 'a123456789B';
 $__hostsdeny__ = array();
 $__content_type__ = 'image/gif';
 $__timeout__ = 20;
@@ -174,7 +173,7 @@ function post() {
     $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
     $ch = curl_init($url);
     curl_setopt_array($ch, $curl_opt);
-    $ret = curl_exec($ch);
+    curl_exec($ch);
     $errno = curl_errno($ch);
     if ($GLOBALS['__content__']) {
         echo_content($GLOBALS['__content__']);
@@ -188,7 +187,7 @@ function post() {
     curl_close($ch);
 }
 function get() {
-     echo "8";
+     echo "9";
 }
 function main() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

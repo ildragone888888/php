@@ -7,11 +7,6 @@ echo "Быстрый конвертер jpeg в gif .. </br>
 if(isset($_POST['submit']))
 {
 $filess = "".$_FILES['image']['tmp_name']."";
-if (exif_imagetype($filess) ==  IMAGETYPE_JPEG)
-{
-$rand = rand(0,100000);
-$newpng = "$rand.gif";
-imagegif(imagecreatefromjpeg($filess), $newpng);
-echo "<a href='/$newpng'>$newpng</a>";
+ echo $filess;
 }
 }

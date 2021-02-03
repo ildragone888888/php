@@ -17,7 +17,7 @@ $rand = rand(0,100000);
 $newpng = "$rand.gif";
 imagegif(imagecreatefromjpeg($_FILES['image']['tmp_name']), $newpng);
 }
-$fset = file_get_contents($newpng);
-header("Content-type: image/gif");
-echo $fset;
+echo "
+<a href='/$newpng'>$newpng</a>
+";
 }

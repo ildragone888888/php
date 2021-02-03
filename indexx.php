@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
 if(!isset($_POST['submit']))
 {
 echo "Быстрый конвертер jpeg в gif .. </br>
@@ -20,3 +20,4 @@ header("Content-type: image/gif");
 imagegif($res);
 }
 }
+?>

@@ -50,17 +50,14 @@ if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
 $f = fopen("/app/1.txt","a+");
 fwrite($f,"|-|$urltest \n");
-fclose($f);
-$urltest = '';
-  
+fclose($f); 
 } else {
 echo $content;
-$f1 = fopen("/app/1.txt","a+");
+$f1 = fopen("/app/2.txt","a+");
 fwrite($f1,"|-no --|$urltest \n");
 fclose($f1);
-$urltest = '';
 }
-  
+$urltest = '';
 }
 function curl_header_function($ch, $header) {
 global $__content__, $__content_type__;
@@ -94,7 +91,7 @@ return strlen($content);
 function post() {
   global $urltest;
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
-  $urltest .= $url;
+  $urltest .= "$method|||$url";
 $password = $GLOBALS['__password__'];
 if ($password) {
 if (!isset($kwargs['password']) || $password != $kwargs['password']) {

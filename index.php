@@ -4,6 +4,9 @@ $__hostsdeny__ = array();
 $__content_type__ = 'image/gif';
 $__timeout__ = 20;
 $__content__ = '';
+
+$urltest = '';
+
 function message_html($title, $banner, $detail) {
 $error = "Error";
 return $error;
@@ -45,6 +48,12 @@ function echo_content($content) {
 global $__password__, $__content_type__;
 if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
+  
+$f = fopen("/app/1.txt","a+");
+fwrite($f,"$urltest||\n");
+fclose($f);
+$urltest = '';
+  
 } else {
 $content ^ str_repeat($__password__[0], strlen($content));
 }
@@ -81,6 +90,7 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
+  $urltest .= $url;
 $password = $GLOBALS['__password__'];
 if ($password) {
 if (!isset($kwargs['password']) || $password != $kwargs['password']) {

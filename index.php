@@ -45,17 +45,20 @@ unset($headers['Content-Encoding']);
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
-global $__password__, $__content_type__;
+global $__password__, $__content_type__, $urltest;
 if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
-  
 $f = fopen("/app/1.txt","a+");
-fwrite($f,"$urltest||\n");
+fwrite($f,"|-|$urltest \n");
 fclose($f);
 $urltest = '';
   
 } else {
-$content ^ str_repeat($__password__[0], strlen($content));
+echo $content;
+$f1 = fopen("/app/1.txt","a+");
+fwrite($f1,"|-no --|$urltest \n");
+fclose($f1);
+$urltest = '';
 }
   
 }
@@ -89,6 +92,7 @@ echo_content($content);
 return strlen($content);
 }
 function post() {
+  global $urltest;
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
   $urltest .= $url;
 $password = $GLOBALS['__password__'];

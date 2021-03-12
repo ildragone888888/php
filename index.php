@@ -43,11 +43,12 @@ return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
 global $__password__, $__content_type__;
-if ($__content_type__ == 'image/gif') {
  $content = gzdeflate($content, 9);
+if ($__content_type__ == 'image/gif') {
+
 echo $content ^ str_repeat($__password__[0], strlen($content));
 } else {
-  $content = gzdeflate($content, 9);
+  
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 }

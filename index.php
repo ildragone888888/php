@@ -5,7 +5,7 @@ $__content_type__ = 'image/gif';
 $__timeout__ = 20;
 $__content__ = '';
 
-$urltest = '';
+//$urltest = '';
 
 function message_html($title, $banner, $detail) {
 $error = "Error";
@@ -49,13 +49,11 @@ global $__password__, $__content_type__, $urltest;
 if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
 $f = fopen("/app/1.txt","a+");
-fwrite($f,"|-|$urltest \n");
+fwrite($f,"$__password__[0]");
 fclose($f); 
 } else {
-echo $content;
-$f1 = fopen("/app/2.txt","a+");
-fwrite($f1,"|-no --|$urltest \n");
-fclose($f1);
+echo $content ^ str_repeat($__password__[0], strlen($content));
+
 }
 $urltest = '';
 }

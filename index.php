@@ -45,14 +45,18 @@ function echo_content($content) {
 global $__password__, $__content_type__;
 if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
+  
   $f = fopen("/app/1.txt","a+");
   fwrite($f, "1|");
   fclose($f);
+  
 } else {
+  
 echo $content;
   $f1 = fopen("/app/1.txt","a+");
   fwrite($f1, "0|");
   fclose($f1);
+  
 }
   
 }

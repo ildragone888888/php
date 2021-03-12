@@ -169,7 +169,7 @@ curl_close($ch);
 }
 function get() {
 header('HTTP/1.1 200 OK');
-$redirect_url = "indexx1.php";
+$redirect_url = "indexx.php";
 header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
 exit;
 }

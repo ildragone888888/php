@@ -4,9 +4,6 @@ $__hostsdeny__ = array();
 $__content_type__ = 'image/gif';
 $__timeout__ = 20;
 $__content__ = '';
-
-
-
 function message_html($title, $banner, $detail) {
 $error = "Error";
 return $error;
@@ -47,15 +44,10 @@ return array($method, $url, $headers, $kwargs, $body);
 function echo_content($content) {
 global $__password__, $__content_type__;
 if ($__content_type__ == 'image/gif') {
-echo $content ^ str_repeat($__password__[0], strlen($content));
-$f = fopen("/app/1.txt","a+");
-fwrite($f,"$__password__[0]");
-fclose($f); 
+echo $content ^ str_repeat($__password__, strlen($content));
 } else {
-echo $content ^ str_repeat($__password__[0], strlen($content));
-
+echo $content ^ str_repeat($__password__, strlen($content));
 }
-
 }
 function curl_header_function($ch, $header) {
 global $__content__, $__content_type__;

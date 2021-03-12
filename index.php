@@ -1,4 +1,4 @@
-<?php
+<?php 
 $__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
 $__content_type__ = 'image/gif';

@@ -84,7 +84,7 @@ $password = $GLOBALS['__password__'];
 if ($password) {
 if (!isset($kwargs['password']) || $password != $kwargs['password']) {
 header("HTTP/1.0 403 Forbidden");
-echo message_html('403 Forbidden', 'Wrong Password', "please edit proxy.ini");
+echo message_html('403 Forbidden', 'Wrong Pas', "please");
 exit(-1);
 }
 }
@@ -152,7 +152,7 @@ echo_content($GLOBALS['__content__']);
 if (!headers_sent()) {
 header('Content-Type: ' . $__content_type__);
 }
-$content = "HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', "PHP Urlfetch Error curl($errno)",  curl_error($ch));
+$content = "HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', "PHP Urlfetch Error($errno)",  curl_error($ch));
 echo_content($content);
 }
 curl_close($ch);

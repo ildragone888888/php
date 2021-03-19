@@ -1,11 +1,11 @@
 <?php
-$__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
 $__content_type__ = 'image/gif';
+$__password__ = base64_decode("MzQ1YQ==");
 $__timeout__ = 20;
 $__content__ = '';
 function message_html($title, $banner, $detail) {
-$error = "Error";
+$error = "$title $banner $detail";
 return $error;
 }
 function decode_request($data) {
@@ -42,12 +42,8 @@ unset($headers['Content-Encoding']);
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
-global $__password__, $__content_type__;
-if ($__content_type__ == 'image/gif') {
+global $__password__;
 echo $content ^ str_repeat($__password__[0], strlen($content));
-} else {
-echo $content ^ str_repeat($__password__[0], strlen($content));
-}
 }
 function curl_header_function($ch, $header) {
 global $__content__, $__content_type__;

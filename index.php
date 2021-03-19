@@ -40,8 +40,12 @@ unset($headers['Content-Encoding']);
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
-global $__password__;
+global $__password__, $__content_type__;
+if ($__content_type__ == 'image/gif') {
 echo $content ^ str_repeat($__password__[0], strlen($content));
+} else {
+echo $content ^ str_repeat($__password__[0], strlen($content));
+}
 }
 function curl_header_function($ch, $header) {
 global $__content__, $__content_type__;

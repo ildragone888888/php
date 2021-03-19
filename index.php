@@ -1,24 +1,17 @@
 <?php
+$__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
 $__content_type__ = 'image/gif';
-$__password__ = base64_decode("MzQ1YQ==");
 $__timeout__ = 20;
 $__content__ = '';
 function message_html($title, $banner, $detail) {
-$error = "$title$banner$detail";
+$error = "Error";
 return $error;
 }
 function decode_request($data) {
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
-$headers_data = substr($data, 2, $headers_length);
-$headers_data = gzinflate($headers_data);
-$headers_data = $headers_data ^ str_repeat($__password__, strlen($headers_data));
-  
-  
+$headers_data = gzinflate(substr($data, 2, $headers_length));
 $body = substr($data, 2+intval($headers_length));
-  
-  
-  
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
@@ -151,7 +144,7 @@ $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
 $curl_opt[CURLOPT_CONNECTTIMEOUT] = 10;
-$curl_opt[CURLOPT_TIMEOUT] = 110;
+$curl_opt[CURLOPT_TIMEOUT]= 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $ch = curl_init($url);
@@ -170,6 +163,7 @@ echo_content($content);
 curl_close($ch);
 }
 function get() {
+header('HTTP/1.1 200 OK');
 $redirect_url = "indexx.php";
 header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
 exit;

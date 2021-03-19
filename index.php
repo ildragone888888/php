@@ -145,7 +145,7 @@ $curl_opt[CURLOPT_CONNECTTIMEOUT] = 10;
 $curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-$curl_opt[CURLOPT_IPRESOLVE] = 'CURL_IPRESOLVE_V4';
+$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 $ch = curl_init($url);
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);

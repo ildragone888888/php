@@ -1,8 +1,6 @@
-<?php
-$__hostsdeny__ = array();  
+<?php 
 $__content_type__ = 'image/gif';
 $__password__ = base64_decode("MzQ1YQ==");
-$__timeout__ = 20;
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "$title $banner $detail";
@@ -84,17 +82,6 @@ echo message_html('403 Forbidden', 'pass', "please");
 exit(-1);
 }
 }
-$hostsdeny = $GLOBALS['__hostsdeny__'];
-if ($hostsdeny) {
-$urlparts = parse_url($url);
-$host = $urlparts['host'];
-foreach ($hostsdeny as $pattern) {
-if (substr($host, strlen($host)-strlen($pattern)) == $pattern) {
-echo_content("HTTP/1.0 403\r\n\r\n" . message_html('403 Forbidden', "hostsdeny matched($host)",  $url));
-exit(-1);
-}
-}
-}
 if ($body) {
 $headers['Content-Length'] = strval(strlen($body));
 }
@@ -105,7 +92,6 @@ $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
-$timeout = $GLOBALS['__timeout__'];
 $curl_opt = array();
 switch (strtoupper($method)) {
 case 'HEAD':

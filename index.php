@@ -1,9 +1,10 @@
-<?php 
+<?php
+$__password__ = base64_decode("MzQ1YQ==");
+$__hostsdeny__ = array();  
 $__content_type__ = 'image/gif';
-$__password__ = "MzQ1YQ==";
 $__content__ = '';
 function message_html($title, $banner, $detail) {
-$error = "$title $banner $detail";
+$error = "Error $title $banner $detail";
 return $error;
 }
 function decode_request($data) {
@@ -78,12 +79,23 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
-$password = base64_decode($GLOBALS['__password__']);
+$password = $GLOBALS['__password__'];
 if ($password) {
 if (!isset($kwargs['password']) || $password != $kwargs['password']) {
 header("HTTP/1.0 403 Forbidden");
-echo message_html('403 Forbidden', 'pass', "please");
+echo message_html('403 Forbidden', 'Wrong Pas', "please");
 exit(-1);
+}
+}
+$hostsdeny = $GLOBALS['__hostsdeny__'];
+if ($hostsdeny) {
+$urlparts = parse_url($url);
+$host = $urlparts['host'];
+foreach ($hostsdeny as $pattern) {
+if (substr($host, strlen($host)-strlen($pattern)) == $pattern) {
+echo_content("HTTP/1.0 403\r\n\r\n" . message_html('403 Forbidden', "hostsdeny matched($host)",  $url));
+exit(-1);
+}
 }
 }
 if ($body) {
@@ -161,4 +173,4 @@ post();
 get();
 }
 }
-main(); 
+main();

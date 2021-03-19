@@ -1,7 +1,7 @@
 <?php
-$__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
 $__content_type__ = 'image/gif';
+$__password__ = base64_decode("MzQ1YQ==");
 $__timeout__ = 20;
 $__content__ = '';
 function message_html($title, $banner, $detail) {
@@ -141,10 +141,10 @@ $curl_opt[CURLOPT_BINARYTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-$curl_opt[CURLOPT_FAILONERROR]= false;
+$curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
 $curl_opt[CURLOPT_CONNECTTIMEOUT] = 10;
-$curl_opt[CURLOPT_TIMEOUT]= 0;
+$curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $ch = curl_init($url);
@@ -163,7 +163,6 @@ echo_content($content);
 curl_close($ch);
 }
 function get() {
-header('HTTP/1.1 200 OK');
 $redirect_url = "indexx.php";
 header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
 exit;

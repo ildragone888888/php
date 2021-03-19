@@ -5,7 +5,7 @@ $__password__ = base64_decode("MzQ1YQ==");
 $__timeout__ = 20;
 $__content__ = '';
 function message_html($title, $banner, $detail) {
-$error = "Error";
+$error = "$title$banner$detail";
 return $error;
 }
 function decode_request($data) {

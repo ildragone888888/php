@@ -109,6 +109,8 @@ foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
 $curl_opt = array();
+$ch = curl_init();
+$curl_opt[CURLOPT_URL] = $url;
 switch (strtoupper($method)) {
 case 'HEAD':
 $curl_opt[CURLOPT_NOBODY] = true;
@@ -146,7 +148,6 @@ $curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
-$ch = curl_init($url);
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
 $errno = curl_errno($ch);

@@ -1,6 +1,6 @@
 <?php 
 $__content_type__ = 'image/gif';
-$__password__ = base64_decode("MzQ1YQ==");
+$__password__ = "MzQ1YQ==";
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "$title $banner $detail";
@@ -74,7 +74,7 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
-$password = $GLOBALS['__password__'];
+$password = base64_decode($GLOBALS['__password__']);
 if ($password) {
 if (!isset($kwargs['password']) || $password != $kwargs['password']) {
 header("HTTP/1.0 403 Forbidden");

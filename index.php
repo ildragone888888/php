@@ -1,7 +1,7 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
-$__content_type__ = 'application/zip';
+$__content_type__ = 'image/gif';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
@@ -62,6 +62,9 @@ $key = join('-', array_map('ucfirst', explode('-', substr($header, 0, $pos))));
 if ($key != 'Transfer-Encoding') {
 $__content__ .= $key . substr($header, $pos);
 }
+}
+if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
+$__content_type__ = 'image/x-png';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);
@@ -133,6 +136,10 @@ $curl_opt[CURLOPT_NOBODY] = true;
 break;
 case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
+break;
+case 'TRACE':
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
+$curl_opt[CURLOPT_NOBODY] = true;
 break;
 default:
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));

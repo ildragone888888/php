@@ -1,7 +1,7 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
-$__content_type__ = 'image/gif';
+$__content_type__ = 'application/zlib';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
@@ -64,7 +64,7 @@ $__content__ .= $key . substr($header, $pos);
 }
 }
 if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'image/x-png';
+$__content_type__ = 'application/zlib';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);
@@ -150,7 +150,6 @@ $curl_opt[CURLOPT_CONNECTTIMEOUT] = 10;
 $curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
 $errno = curl_errno($ch);

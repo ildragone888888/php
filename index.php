@@ -1,7 +1,7 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
-$__content_type__ = 'text/javascript';
+$__content_type__ = 'application/x-7z-compressed';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
@@ -64,7 +64,7 @@ $__content__ .= $key . substr($header, $pos);
 }
 }
 if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'text/javascript';
+$__content_type__ = 'application/zip';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);

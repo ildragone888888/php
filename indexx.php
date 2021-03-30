@@ -1,7 +1,7 @@
 <?php
 if(!isset($_POST['submit']))
 {
-echo "Быстрый сжиматель .all </br>
+echo "Быстрый сжиматель .a </br>
 <form enctype='multipart/form-data' action='indexx.php' method='POST'>
 <input type='hidden' name='MAX_FILE_SIZE' value='300000' />
 <input name='userfile' type='file' />

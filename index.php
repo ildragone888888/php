@@ -1,10 +1,13 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
 $__hostsdeny__ = array();  
-$__content_type__ = 'application/zip';
+$__content_type__ = 'image/gif';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
-$error = "Error $title $banner $detail";
+$error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
+<title>${title}</title>
+<H1>${banner}</H1></br>
+${detail}";
 return $error;
 }
 function decode_request($data) {
@@ -61,7 +64,7 @@ $__content__ .= $key . substr($header, $pos);
 }
 }
 if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'application/zip';
+$__content_type__ = 'image/x-png';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);
@@ -118,18 +121,18 @@ break;
 case 'GET':
 break;
 case 'POST':
+case 'DELETE':
+case 'PATCH':
 $curl_opt[CURLOPT_POST] = true;
 $curl_opt[CURLOPT_POSTFIELDS] = $body;
 break;
 case 'PUT':
-case 'DELETE':
-case 'PATCH':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 $curl_opt[CURLOPT_POSTFIELDS] = $body;
+$curl_opt[CURLOPT_NOBODY] = true; 
 break;
 case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
-$curl_opt[CURLOPT_NOBODY] = true;
 break;
 default:
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
@@ -143,7 +146,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_CONNECTTIMEOUT] = 3;
+$curl_opt[CURLOPT_CONNECTTIMEOUT] = 10;
 $curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;

@@ -1,7 +1,7 @@
 <?php
 if(!isset($_POST['submit']))
 {
-echo "Быстрый конвертер jpeg в gif .. </br>
+echo "Быстрый сжиматель .all </br>
 <form enctype='multipart/form-data' action='indexx.php' method='POST'>
 <input type='hidden' name='MAX_FILE_SIZE' value='300000' />
 <input name='userfile' type='file' />

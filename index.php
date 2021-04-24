@@ -128,34 +128,18 @@ $curl_opt[CURLOPT_BINARYTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-$curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_CONNECTTIMEOUT] = 3;
+$curl_opt[CURLOPT_CONNECTTIMEOUT] = 1;
 $curl_opt[CURLOPT_TIMEOUT] = 110;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
-$errno = curl_errno($ch);
-if ($GLOBALS['__content__']) 
-{
-echo_content($GLOBALS['__content__']);
-} 
-else if ($errno) 
-{
-if (!headers_sent()) 
-{
-header('Content-Type: ' . $__content_type__);
-}
-$content = "HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', "PHP Urlfetch Error($errno)",  curl_error($ch));
-echo_content($content);
-}
 curl_close($ch);
 }
 function get() {
-$redirect_url = "indexx.php";
-header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
+header("Location: http://".$_SERVER['HTTP_HOST']."/indexx.php");
 exit;
 }
 function main() {

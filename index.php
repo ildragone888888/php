@@ -1,8 +1,8 @@
 <?php
-set_time_limit(120);
 $__password__ = base64_decode("MzQ1YQ==");
 $__content_type__ = 'application/zip';
 $__content__ = '';
+
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
 <title>${title}</title>
@@ -10,14 +10,17 @@ $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
 ${detail}";
 return $error;
 }
+
 function decode_request($data) {
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = gzinflate(substr($data, 2, $headers_length));
 $body = substr($data, 2+intval($headers_length));
+
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
 $url = $request_line_items[1];
+
 $headers = array();
 $kwargs  = array();
 $kwargs_prefix = 'X-URLFETCH-';
@@ -43,10 +46,13 @@ unset($headers['Content-Encoding']);
 }
 return array($method, $url, $headers, $kwargs, $body);
 }
+
 function echo_content($content) {
 global $__password__;
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
+
+
 function curl_header_function($ch, $header) {
 global $__content__, $__content_type__;
 $pos = strpos($header, ':');
@@ -64,6 +70,8 @@ header('Content-Type: ' . $__content_type__);
 }
 return strlen($header);
 }
+
+
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -73,6 +81,8 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
+
+
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
 $password = $GLOBALS['__password__'];
@@ -119,6 +129,9 @@ break;
 case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
+case 'OPTIONS':
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
+break;
 default:
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
 exit(-1);
@@ -131,17 +144,18 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-//$curl_opt[CURLOPT_CONNECTTIMEOUT] = 2;
-$curl_opt[CURLOPT_TIMEOUT] = 120;
+$curl_opt[CURLOPT_CONNECTTIMEOUT] = 20;
+$curl_opt[CURLOPT_TIMEOUT] = 100;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-//$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
+$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
 curl_close($ch);
 }
 function get() {
-header("Location: http://".$_SERVER['HTTP_HOST']."/indexx.php");
+$redirect_url = "indexx.php";
+header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
 exit;
 }
 function main() {

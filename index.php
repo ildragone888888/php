@@ -1,4 +1,5 @@
 <?php
+set_time_limit(120);
 $__password__ = base64_decode("MzQ1YQ==");
 $__content_type__ = 'application/zip';
 $__content__ = '';

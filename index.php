@@ -102,7 +102,7 @@ break;
 case 'GET':
 break;
 case 'POST':
-$curl_opt[CURLOPT_POST] = true;
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 $curl_opt[CURLOPT_POSTFIELDS] = $body;
 break;
 case 'DELETE':

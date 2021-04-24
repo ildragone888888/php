@@ -1,6 +1,6 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
-$__content_type__ = 'application/octet-stream';
+$__content_type__ = 'application/zip';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
@@ -129,8 +129,8 @@ $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_CONNECTTIMEOUT] = 1;
-$curl_opt[CURLOPT_TIMEOUT] = 110;
+$curl_opt[CURLOPT_CONNECTTIMEOUT] = 2;
+$curl_opt[CURLOPT_TIMEOUT] = 118;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;

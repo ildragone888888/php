@@ -120,7 +120,7 @@ $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
 default:
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
-exit;
+exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
 $curl_opt[CURLOPT_RETURNTRANSFER] = true;

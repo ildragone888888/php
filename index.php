@@ -129,7 +129,7 @@ break;
 case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
-case 'OPTIONS':
+case 'CONNECT':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
 default:

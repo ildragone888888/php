@@ -92,7 +92,7 @@ if ($body) {
 $headers['Content-Length'] = strval(strlen($body));
 }
 if (isset($headers['Connection'])) {
-$headers['Connection'] = 'close';
+//$headers['Connection'] = 'close';
 }
 $header_array = array();
 foreach ($headers as $key => $value) {

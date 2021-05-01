@@ -1,5 +1,6 @@
-RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ index.php [QSA,L]
+Options -Indexes
+RewriteEngine on
+RewriteCond %{REQUEST_URI} (.*/[^/.]+)($|\?)
+RewriteCond %{REQUEST_URI} ^(.*\.jpg|.*\.gif|.*\.exe|.*\.zip)
+RewriteRule  . - [L]
+RewriteRule (.*) index.php [L]

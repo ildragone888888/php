@@ -91,9 +91,9 @@ exit(-1);
 if ($body) {
 $headers['Content-Length'] = strval(strlen($body));
 }
-if (isset($headers['Connection'])) {
+//if (isset($headers['Connection'])) {
 //$headers['Connection'] = 'close';
-}
+//}
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;

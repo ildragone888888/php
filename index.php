@@ -80,14 +80,7 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
-$password = $GLOBALS['__password__'];
-if ($password) {
-if (!isset($kwargs['password']) || $password != $kwargs['password']) {
-header("HTTP/1.0 403 Forbidden");
-echo message_html('403 Forbidden', 'Wrong Pas', "please");
-exit(-1);
-}
-}
+
 if ($body) {
 $headers['Content-Length'] = strval(strlen($body));
 }

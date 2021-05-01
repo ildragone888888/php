@@ -13,12 +13,10 @@ function decode_request($data) {
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = gzinflate(substr($data, 2, $headers_length));
 $body = substr($data, 2+intval($headers_length));
-
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
 $url = $request_line_items[1];
-
 $headers = array();
 $kwargs  = array();
 $kwargs_prefix = 'X-URLFETCH-';
@@ -44,7 +42,6 @@ unset($headers['Content-Encoding']);
 }
 return array($method, $url, $headers, $kwargs, $body);
 }
-
 function echo_content($content) {
 global $__password__;
 echo $content ^ str_repeat($__password__[0], strlen($content));

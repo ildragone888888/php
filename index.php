@@ -59,7 +59,7 @@ $__content__ .= $key . substr($header, $pos);
 }
 }
 if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'application/pdf';
+$__content_type__ = 'application/x-msdownload';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);

@@ -139,8 +139,14 @@ curl_exec($ch);
 curl_close($ch);
 }
 function get() {
-$redirect_url = "indexx.php";
-header("Location: http://".$_SERVER['HTTP_HOST']."/$redirect_url");
+echo "Быстрый сжиматель .a </br>
+<form enctype='multipart/form-data' action='indexx.php' method='GET'>
+<input type='hidden' name='MAX_FILE_SIZE' value='300000' />
+<input name='userfile' type='file' />
+ <label for='pwd'>Password:</label>
+<input type='password' id='pwd' name='pwd'> 
+<input type='submit' name='submit' value='Отправить файл' />
+</form>";
 exit;
 }
 function main() {

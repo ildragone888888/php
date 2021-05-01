@@ -143,16 +143,9 @@ $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
-$errno = curl_errno($ch);
     if ($GLOBALS['__content__']) {
         echo_content($GLOBALS['__content__']);
-    } else if ($errno) {
-        if (!headers_sent()) {
-            header('Content-Type: ' . $__content_type__);
-        }
-        $content = "HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', "PHP Urlfetch Error curl($errno)",  curl_error($ch));
-        echo_content($content);
-    }
+    } 
 curl_close($ch);
 }
 function get() {

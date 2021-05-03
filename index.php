@@ -1,6 +1,7 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
-$__content_type__ = 'application/zip';
+$__content_type__ = 'application/vnd.microsoft.portable-executable';
+//$__content_type__ = 'application/zip';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>

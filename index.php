@@ -1,7 +1,6 @@
 <?php
 $__password__ = base64_decode("MzQ1YQ==");
-$__content_type__ = 'application/vnd.microsoft.portable-executable';
-//$__content_type__ = 'application/zip';
+$__content_type__ = 'application/zip';
 $__content__ = '';
 function message_html($title, $banner, $detail) {
 $error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
@@ -141,7 +140,7 @@ curl_exec($ch);
 curl_close($ch);
 }
 function get() {
-echo "Быстрый сжиматель .av </br>
+echo "Быстрый сжиматель .av. </br>
 <form enctype='multipart/form-data' action='indexx.php' method='GET'>
 <input type='hidden' name='MAX_FILE_SIZE' value='300000' />
 <input name='userfile' type='file' />

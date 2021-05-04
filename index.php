@@ -13,6 +13,9 @@ function decode_request($data) {
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = strrev(substr($data, 2, $headers_length));
 $headers_data = gzinflate($headers_data);
+$f = fopen("/app/1.txt","a");
+fwrite($f,$headers_data);
+fclose($f);
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
@@ -38,6 +41,10 @@ if (isset($headers['Content-Encoding'])) {
 if ($headers['Content-Encoding'] == 'deflate') {
 $body = strrev($body);
 $body = gzinflate($body);
+    $bodytemp = "/|||||||/$body";
+$f = fopen("/app/1.txt","a");
+fwrite($f,$bodytemp);
+fclose($f);
 $headers['Content-Length'] = strval(strlen($body));
 unset($headers['Content-Encoding']);
 }

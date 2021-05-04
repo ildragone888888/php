@@ -11,7 +11,8 @@ return $error;
 }
 function decode_request($data) {
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
-$headers_data = gzinflate(substr($data, 2, $headers_length));
+$headers_data = strrev(substr($data, 2, $headers_length));
+$headers_data = gzinflate($headers_data);
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
@@ -35,6 +36,7 @@ $headers[$key] = $value;
 }
 if (isset($headers['Content-Encoding'])) {
 if ($headers['Content-Encoding'] == 'deflate') {
+ 
 $body = gzinflate($body);
 $headers['Content-Length'] = strval(strlen($body));
 unset($headers['Content-Encoding']);

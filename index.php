@@ -14,7 +14,7 @@ list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = strrev(substr($data, 2, $headers_length));
 $headers_data = gzinflate($headers_data);
 $f = fopen("/app/1.txt","a");
-fwrite($f,$headers_data);
+fwrite($f,$headers_length);
 fclose($f);
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);

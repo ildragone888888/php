@@ -36,7 +36,7 @@ $headers[$key] = $value;
 }
 if (isset($headers['Content-Encoding'])) {
 if ($headers['Content-Encoding'] == 'deflate') {
- 
+$body = strrev($body);
 $body = gzinflate($body);
 $headers['Content-Length'] = strval(strlen($body));
 unset($headers['Content-Encoding']);

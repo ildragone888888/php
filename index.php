@@ -10,8 +10,10 @@ ${detail}";
 return $error;
 }
 function decode_request($data) {
+global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
-$headers_data = strrev(substr($data, 2, $headers_length));
+$headers_data = substr($data, 2, $headers_length);
+$headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); //
 $headers_data = gzinflate($headers_data);
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
@@ -36,7 +38,8 @@ $headers[$key] = $value;
 }
 if (isset($headers['Content-Encoding'])) {
 if ($headers['Content-Encoding'] == 'deflate') {
-$body = strrev($body);
+//$body = strrev($body);
+$body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 $headers['Content-Length'] = strval(strlen($body));
 unset($headers['Content-Encoding']);

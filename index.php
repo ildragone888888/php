@@ -38,6 +38,7 @@ if (strlen($body) != "")
 {
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
+$headers['Content-Length'] = strval(strlen($body));
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);
@@ -76,10 +77,6 @@ return strlen($content);
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
-if (strlen($body) != "")
-{
-$headers['Content-Length'] = strval(strlen($body));
-}
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;

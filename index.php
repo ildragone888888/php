@@ -142,7 +142,7 @@ function get() {
 $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
-header("Content-type: video/JPEG");
+header("Content-type: image/jpeg");
 echo $echo;
 exit;
 }

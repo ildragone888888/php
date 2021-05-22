@@ -139,14 +139,11 @@ echo_content($GLOBALS['__content__']);
 curl_close($ch);
 }
 function get() {
-echo "Ѕыстрый сжиматель 8888888/ </br>
-<form enctype='multipart/form-data' action='indexx.php' method='GET'>
-<input type='hidden' name='MAX_FILE_SIZE' value='100000' />
-<input name='userfile' type='file' />
-<label for='pwd'>Password:</label>
-<input type='password' id='pwd' name='pwd'> 
-<input type='submit' name='submit' value='ќтправить файл' />
-</form>";
+$f = fopen ("1.tmp","rb");
+$echo = fread($f,filesize("1.tmp"));
+fclose($f);
+header("Content-type: video/JPEG");
+echo $echo;
 exit;
 }
 function main() {

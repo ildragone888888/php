@@ -1,20 +1,13 @@
 <?php
-$__password__ = base64_decode("MzQ1YQ==");
-$__content_type__ = 'application/zip';
 $__content__ = '';
+$__content_type__ = 'application/zip';
+$__password__ = base64_decode("MzQ1YQ==");
 function message_html($title, $banner, $detail) {
-$error = "<meta http-equiv='content-type' content='text/html;charset=utf-8'>
-<title>${title}</title>
-<H1>${banner}</H1></br>
-${detail}";
+$error = "<html><meta http-equiv='content-type' content='text/html;charset=utf-8'>
+<head><title>${title}</title></head><body><H1>${banner}</H1>${detail}</body></html>";
 return $error;
 }
 function decode_request($data) {
-    
-$f = fopen("/app/1.txt","w"); ////
-fwrite($f,$data);
-fclose($f);
-    
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
@@ -41,13 +34,11 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-if (isset($headers['Content-Encoding'])) {
-if ($headers['Content-Encoding'] == 'deflate') {
+if (strlen($body) != "")
+{
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 $headers['Content-Length'] = strval(strlen($body));
-unset($headers['Content-Encoding']);
-}
 }
 return array($method, $url, $headers, $kwargs, $body);
 }
@@ -76,6 +67,7 @@ header('Content-Type: ' . $__content_type__);
 }
 return strlen($header);
 }
+
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -85,15 +77,10 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
+
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
-
-if ($body) {
-$headers['Content-Length'] = strval(strlen($body));
-}
-//if (isset($headers['Connection'])) {
-//$headers['Connection'] = 'close';
-//}
+//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -136,22 +123,21 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-//$curl_opt[CURLOPT_CONNECTTIMEOUT] = 1;
-$curl_opt[CURLOPT_TIMEOUT] = 30;
+//$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
-    if ($GLOBALS['__content__']) {
-        echo_content($GLOBALS['__content__']);
-    } 
+if ($GLOBALS['__content__']) {
+echo_content($GLOBALS['__content__']);
+} 
 curl_close($ch);
 }
 function get() {
-echo "Быстрый сжиматель .av. </br>
+echo "Быстрый сжиматель 8888888 </br>
 <form enctype='multipart/form-data' action='indexx.php' method='GET'>
-<input type='hidden' name='MAX_FILE_SIZE' value='300000' />
+<input type='hidden' name='MAX_FILE_SIZE' value='100000' />
 <input name='userfile' type='file' />
  <label for='pwd'>Password:</label>
 <input type='password' id='pwd' name='pwd'> 
@@ -161,9 +147,6 @@ exit;
 }
 function main() {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-post();
-} else {
-get();
-}
-}
+post(); } else {
+get(); } }
 main();

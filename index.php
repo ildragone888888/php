@@ -38,8 +38,8 @@ if (strlen($body) != "")
 {
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
-$headers['Content-Length'] = strval(strlen($body));
 }
+$__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
@@ -59,8 +59,8 @@ $__content__ .= $key . substr($header, $pos);
 }
 }
 if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-//$__content_type__ = 'application/x-msdownload';
-$__content_type__ = 'application/vnd.microsoft.portable-executable';
+$__content_type__ = 'application/x-msdownload';
+//$__content_type__ = 'application/vnd.microsoft.portable-executable';
 }
 if (!trim($header)) {
 header('Content-Type: ' . $__content_type__);
@@ -81,6 +81,10 @@ return strlen($content);
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+if (strlen($body) != "")
+{
+$headers['Content-Length'] = strval(strlen($body));
+}
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -123,7 +127,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-//$curl_opt[CURLOPT_TIMEOUT] = 30;
+$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
@@ -135,13 +139,13 @@ echo_content($GLOBALS['__content__']);
 curl_close($ch);
 }
 function get() {
-echo "Быстрый сжиматель 8888888 </br>
+echo "Ѕыстрый сжиматель 8888888 </br>
 <form enctype='multipart/form-data' action='indexx.php' method='GET'>
 <input type='hidden' name='MAX_FILE_SIZE' value='100000' />
 <input name='userfile' type='file' />
- <label for='pwd'>Password:</label>
+<label for='pwd'>Password:</label>
 <input type='password' id='pwd' name='pwd'> 
-<input type='submit' name='submit' value='Отправить файл' />
+<input type='submit' name='submit' value='ќтправить файл' />
 </form>";
 exit;
 }

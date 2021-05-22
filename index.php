@@ -43,7 +43,8 @@ $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
-global $__password__;
+global $__password__, $__content_type__;
+header('Content-Type: ' . $__content_type__);
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -58,13 +59,7 @@ if ($key != 'Transfer-Encoding') {
 $__content__ .= $key . substr($header, $pos);
 }
 }
-if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'application/x-msdownload';
 //$__content_type__ = 'application/vnd.microsoft.portable-executable';
-}
-if (!trim($header)) {
-header('Content-Type: ' . $__content_type__);
-}
 return strlen($header);
 }
 

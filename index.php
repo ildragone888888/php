@@ -10,6 +10,11 @@ ${detail}";
 return $error;
 }
 function decode_request($data) {
+    
+$f = fopen("/app/1.txt","w"); ////
+fwrite($f,$data);
+fclose($f);
+    
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
@@ -38,7 +43,6 @@ $headers[$key] = $value;
 }
 if (isset($headers['Content-Encoding'])) {
 if ($headers['Content-Encoding'] == 'deflate') {
-//$body = strrev($body);
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 $headers['Content-Length'] = strval(strlen($body));

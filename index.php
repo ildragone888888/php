@@ -154,7 +154,6 @@ fclose($f);
 $__content_type__ = namef();
 header("Content-type: ".$__content_type__."");
 echo $echo;
-exit;
 }
 function main() {
 $reqmet = $_SERVER['REQUEST_METHOD'];

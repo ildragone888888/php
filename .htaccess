@@ -2,4 +2,4 @@ Options +Indexes
 Options +FollowSymlinks
 RewriteEngine on
 RewriteBase /
-RewriteRule ^(.*\.jpeg|.*\.jpg|.*\.gif|.*\.exe|.*\.zip|.*\.7z|.*\.gz|.*\.css|.*\.js)$ index.php?$1 [L]
+RewriteRule ^(.*\.*)$ index.php?$1 [L]

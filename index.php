@@ -1,11 +1,30 @@
 <?php
 $__content__ = '';
-$__content_type__ = 'application/zip';
 $__password__ = base64_decode("MzQ1YQ==");
 function message_html($title, $banner, $detail) {
-$error = "<html><meta http-equiv='content-type' content='text/html;charset=utf-8'>
-<head><title>${title}</title></head><body><H1>${banner}</H1>${detail}</body></html>";
+$error = "<title>${title}</title>${banner}</br>${detail}";
 return $error;
+}
+function namef() {
+$namef = $_SERVER['REQUEST_URI'];
+$namef = explode(".", $namef);
+$namef = $namef[1];
+$search_ftmp = file('mime.tmp');
+$search_f = array();
+foreach ($search_ftmp as $value) {
+	$value1 = explode("||", $value); 
+	$search_f[$value1[0]] = $value1[1];
+}
+foreach($search_f as $key=>$value) { 
+if ($key == $namef) {
+$content_type = $value;
+}
+}
+if (empty($content_type))
+{
+$content_type = 'Content-type: image/jpeg';
+}
+return $content_type;
 }
 function decode_request($data) {
 global $__password__;
@@ -44,26 +63,25 @@ $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
-global $__password__, $__content_type__;
-header('Content-Type: ' . $__content_type__);
+global $__password__;
+$__content_type__ = namef();
+header("Content-type: ".$__content_type__."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
-global $__content__, $__content_type__;
+global $__content__;
 $pos = strpos($header, ':');
 if ($pos == false) {
 $__content__ .= $header;
-} 
+}
 else {
 $key = join('-', array_map('ucfirst', explode('-', substr($header, 0, $pos))));
 if ($key != 'Transfer-Encoding') {
 $__content__ .= $key . substr($header, $pos);
 }
 }
-//$__content_type__ = 'application/vnd.microsoft.portable-executable';
 return strlen($header);
 }
-
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -73,7 +91,6 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
-
 function post() {
 list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
@@ -119,7 +136,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_TIMEOUT] = 30;
+//$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
@@ -134,12 +151,15 @@ function get() {
 $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
-header("Content-type: image/jpeg");
+$__content_type__ = namef();
+header("Content-type: ".$__content_type__."");
 echo $echo;
 exit;
 }
 function main() {
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-post(); } else {
+$reqmet = $_SERVER['REQUEST_METHOD'];
+if (($reqmet == 'POST') or ($reqmet == "PUT")) {
+post(); } 
+else {
 get(); } }
 main();

@@ -8,20 +8,16 @@ return $error;
 function namef() {
 $namef = $_SERVER['REQUEST_URI'];
 if ($namef == "/") {
-$content_type = "application/gzip";
+$content_type = "application/zip";
 }
 else {
 $namef = explode(".", $namef);
 $namef = $namef[1];
 $search_ftmp = file('mime.tmp');
-$search_f = array();
 foreach ($search_ftmp as $value) {
 	$value1 = explode("||", $value); 
-	$search_f[$value1[0]] = $value1[1];
-}
-foreach($search_f as $key=>$value) { 
-if ($key == $namef) {
-$content_type = $value;
+	if ($value1[0] == $namef) {
+$content_type = $value1[1];
 }
 }
 if (empty($content_type)) {
@@ -140,7 +136,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-//$curl_opt[CURLOPT_TIMEOUT] = 30;
+$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;

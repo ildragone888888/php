@@ -8,7 +8,7 @@ return $error;
 function namef() {
 $namef = $_SERVER['REQUEST_URI'];
 if ($namef == "/") {
-$content_type = "image/jpeg";
+$content_type = "application/gzip";
 }
 else {
 $namef = explode(".", $namef);
@@ -25,7 +25,7 @@ $content_type = $value;
 }
 }
 if (empty($content_type)) {
-$content_type = 'image/jpeg';
+$content_type = 'application/zip';
 }
 }
 return $content_type;

@@ -5,19 +5,14 @@ function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title>${banner}</br>${detail}";
 return $error;
 }
-<?php
 function namef() {
 $namef = $_SERVER['REQUEST_URI'];
-if ($namef == "/")
-{
+if ($namef == "/") {
 $content_type = "image/jpeg";
 }
-else
-{
+else {
 $namef = explode(".", $namef);
- 
 $namef = $namef[1];
- 
 $search_ftmp = file('mime.tmp');
 $search_f = array();
 foreach ($search_ftmp as $value) {
@@ -29,8 +24,7 @@ if ($key == $namef) {
 $content_type = $value;
 }
 }
-if (empty($content_type))
-{
+if (empty($content_type)) {
 $content_type = 'image/jpeg';
 }
 }

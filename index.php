@@ -73,8 +73,9 @@ return array($method, $url, $headers, $body);
 function echo_content($content) {
 global $__password__;
 $__content_type__ = namef();
+$adresscon = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".namefa()."";
+header("Content-Disposition: attachment; filename=".$adresscon."";
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -161,8 +162,9 @@ $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namef();
+$adresscon = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".namefa()."";
+header("Content-Disposition: attachment; filename=".$adresscon."";
 echo $echo;
 }
 function main() {

@@ -7,7 +7,7 @@ return $error;
 }
 function namef() {
 $namef = $_SERVER['REQUEST_URI'];
-if ($namef == "/") {
+if ($namef == "/" or $namef == "") {
 $content_type = "application/zip";
 }
 else {
@@ -30,9 +30,8 @@ function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
-$headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); //
+$headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data));
 $headers_data = gzinflate($headers_data);
-	
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
@@ -58,16 +57,6 @@ if (strlen($body) != "")
 {
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
-	
-$f = fopen("1.txt","w");
-fwrite($f, $headers['Content-Length']);
-fclose($f);
-	
-$headers['Content-Length'] = strval(strlen($body));
-	
-	$f = fopen("0.txt","w");
-fwrite($f, $headers['Content-Length']);
-fclose($f);
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);

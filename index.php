@@ -6,7 +6,6 @@ $error = "<title>${title}</title>${banner}</br>${detail}";
 return $error;
 }
 function namefa() {
-$nameadress = $_SERVER['REQUEST_URI'];
 $nameadress = substr($_SERVER['REQUEST_URI'], 1); 	
 if ($nameadress == "")
 {
@@ -162,9 +161,9 @@ $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namefr();
-$adresscon = namefa();
+$adresst = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$adresscon."";
+header("Content-Disposition: attachment; filename=".$adresst."";
 echo $echo;
 }
 function main() {

@@ -32,6 +32,11 @@ list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
 $headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); //
 $headers_data = gzinflate($headers_data);
+	
+	$f = fopen("1.txt","w");
+fwrite($f,$headers_data);
+fclose($f);
+	
 $body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));

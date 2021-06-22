@@ -6,25 +6,24 @@ $error = "<title>${title}</title>${banner}</br>${detail}";
 return $error;
 }
 function namefa() {
-$nameadress = substr($_SERVER['REQUEST_URI'], 1); 	
-if ($nameadress == "")
-{
-$nameadress = "0.zip";
+$namefa = substr($_SERVER['REQUEST_URI'], 1); 	
+if ($namefa == "") {
+$namefa = "0.zip";
 }
-return $nameadress;
+return $namefa;
 }
 function namefr() {
-$namef = $_SERVER['REQUEST_URI'];
-if ($namef == "/" or $namef == "") {
+$namefr = $_SERVER['REQUEST_URI'];
+if ($namefr == "/" or $namefr == "") {
 $content_type = "application/zip";
 }
 else {
-$namef = explode(".", $namef);
-$namef = $namef[1];
+$namefr = explode(".", $namefr);
+$namefr = $namef[1];
 $search_ftmp = file('mime.tmp');
 foreach ($search_ftmp as $value) {
 	$value1 = explode("||", $value); 
-	if ($value1[0] == $namef) {
+	if ($value1[0] == $namefr) {
 $content_type = $value1[1];
 }
 }
@@ -102,13 +101,12 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
 $curl_opt = array();
-$ch = curl_init();
 $curl_opt[CURLOPT_URL] = $url;
 switch (strtoupper($method)) {
 case 'HEAD':
@@ -134,7 +132,7 @@ case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
 default:
-echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
+echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method:' . $method,  $url));
 exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
@@ -149,6 +147,7 @@ $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
+$ch = curl_init();
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
 if ($GLOBALS['__content__']) {

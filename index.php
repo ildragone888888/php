@@ -5,7 +5,16 @@ function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title>${banner}</br>${detail}";
 return $error;
 }
-function namef() {
+function namefa() {
+$nameadress = $_SERVER['REQUEST_URI'];
+$nameadress = substr($_SERVER['REQUEST_URI'], 1); 	
+if ($nameadress == "")
+{
+$nameadress = "0.zip";
+}
+return $nameadress;
+}
+function namefr() {
 $namef = $_SERVER['REQUEST_URI'];
 if ($namef == "/" or $namef == "") {
 $content_type = "application/zip";
@@ -59,12 +68,13 @@ $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 }
 $__password__ = $kwargs['password'];
-return array($method, $url, $headers, $kwargs, $body);
+return array($method, $url, $headers, $body);
 }
 function echo_content($content) {
 global $__password__;
 $__content_type__ = namef();
 header("Content-type: ".$__content_type__."");
+header("Content-Disposition: attachment; filename=".namefa()."";
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -91,7 +101,7 @@ echo_content($content);
 return strlen($content);
 }
 function post() {
-list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
+list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
@@ -135,7 +145,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_TIMEOUT] = 30;
+//$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
@@ -151,13 +161,8 @@ $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namef();
-$tempss = substr($_SERVER['REQUEST_URI'], 1); 
-if ($tempss == "")
-{
-$tempss = "0.zip";
-}
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$tempss."");
+header("Content-Disposition: attachment; filename=".namefa()."";
 echo $echo;
 }
 function main() {

@@ -163,7 +163,7 @@ fclose($f);
 $__content_type__ = namefr();
 $adresst = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$adresst."";
+header("Content-Disposition: attachment; filename=".$adresst."");
 echo $echo;
 }
 function main() {

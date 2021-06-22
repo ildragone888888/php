@@ -59,14 +59,15 @@ if (strlen($body) != "")
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 	
-	$f = fopen("0.txt","w");
-fwrite($f, $body);
-fclose($f);
 $f = fopen("1.txt","w");
-fwrite($f, serialize($headers));
+fwrite($f, $headers['Content-Length']);
 fclose($f);
 	
 $headers['Content-Length'] = strval(strlen($body));
+	
+	$f = fopen("0.txt","w");
+fwrite($f, $headers['Content-Length']);
+fclose($f);
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $kwargs, $body);

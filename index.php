@@ -74,7 +74,7 @@ global $__password__;
 $__content_type__ = namefr();
 $adresst = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$adresst."";
+header("Content-Disposition: attachment; filename=".$adresst."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {

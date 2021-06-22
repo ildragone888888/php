@@ -164,6 +164,10 @@ fclose($f);
 $__content_type__ = namef();
 header("Content-type: ".$__content_type__."");
 $tempss = substr($_SERVER['REQUEST_URI'], 1); 
+if ($tempss == "")
+{
+$tempss = 0;
+}
 header("Content-Disposition: attachment; filename=".$tempss."");
 echo $echo;
 }

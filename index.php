@@ -162,12 +162,12 @@ $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namef();
-header("Content-type: ".$__content_type__."");
 $tempss = substr($_SERVER['REQUEST_URI'], 1); 
 if ($tempss == "")
 {
-$tempss = 0;
+$tempss = "0.zip";
 }
+header("Content-type: ".$__content_type__."");
 header("Content-Disposition: attachment; filename=".$tempss."");
 echo $echo;
 }

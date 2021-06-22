@@ -163,7 +163,8 @@ $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namef();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=0.".$__content_type__."");
+$tempss = substr($_SERVER['REQUEST_URI'], 1); 
+header("Content-Disposition: attachment; filename=".$tempss."");
 echo $echo;
 }
 function main() {

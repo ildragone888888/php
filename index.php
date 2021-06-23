@@ -15,7 +15,7 @@ $content_type = "application/zip";
 }
 else {
 $namefr = explode(".", $namefr);
-$namefr = $namef[1];
+$namefr = $namefr[1];
 $search_ftmp = file('mime.tmp');
 foreach ($search_ftmp as $value) {
 	$value1 = explode("||", $value); 

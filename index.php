@@ -73,7 +73,7 @@ global $__password__;
 $__content_type__ = namefr();
 $adresst = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$adresst."");
+//header("Content-Disposition: attachment; filename=".$adresst."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -101,7 +101,7 @@ return strlen($content);
 }
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -162,7 +162,7 @@ fclose($f);
 $__content_type__ = namefr();
 $adresst = namefa();
 header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$adresst."");
+//header("Content-Disposition: attachment; filename=".$adresst."");
 echo $echo;
 }
 function main() {

@@ -1,7 +1,34 @@
 <?php
 $__content__ = '';
-$__content_type__ = 'application/zip';
 $__password__ = base64_decode("MzQ1YQ==");
+function namefa() {
+$namefa = substr($_SERVER['REQUEST_URI'], 1); 	
+if ($namefa == "") {
+$namefa = "0.zip";
+}
+return $namefa;
+}
+function namefr() {
+$namefr = $_SERVER['REQUEST_URI'];
+if ($namefr == "/" or $namefr == "") {
+$content_type = "application/zip";
+}
+else {
+$namefr = explode(".", $namefr);
+$namefr = $namef[1];
+$search_ftmp = file('mime.tmp');
+foreach ($search_ftmp as $value) {
+	$value1 = explode("||", $value); 
+	if ($value1[0] == $namefr) {
+$content_type = $value1[1];
+}
+}
+if (empty($content_type)) {
+$content_type = 'application/zip';
+}
+}
+return $content_type;
+}
 function message_html($title, $banner, $detail) {
 $error = "<html><meta http-equiv='content-type' content='text/html;charset=utf-8'>
 <head><title>${title}</title></head><body><H1>${banner}</H1>${detail}</body></html>";
@@ -44,6 +71,8 @@ return array($method, $url, $headers, $kwargs, $body);
 }
 function echo_content($content) {
 global $__password__;
+$content_type = namefr();
+header("Content-type: ".$content_type."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -57,13 +86,6 @@ $key = join('-', array_map('ucfirst', explode('-', substr($header, 0, $pos))));
 if ($key != 'Transfer-Encoding') {
 $__content__ .= $key . substr($header, $pos);
 }
-}
-if (preg_match('@^Content-Type: ?(audio/|image/|video/|application/octet-stream)@i', $header)) {
-$__content_type__ = 'application/x-msdownload';
-//$__content_type__ = 'application/vnd.microsoft.portable-executable';
-}
-if (!trim($header)) {
-header('Content-Type: ' . $__content_type__);
 }
 return strlen($header);
 }
@@ -139,15 +161,12 @@ echo_content($GLOBALS['__content__']);
 curl_close($ch);
 }
 function get() {
-echo "Быстрый сжиматель 88888 </br>
-<form enctype='multipart/form-data' action='indexx.php' method='GET'>
-<input type='hidden' name='MAX_FILE_SIZE' value='100000' />
-<input name='userfile' type='file' />
-<label for='pwd'>Password:</label>
-<input type='password' id='pwd' name='pwd'> 
-<input type='submit' name='submit' value='Отправить файл' />
-</form>";
-exit;
+$f = fopen ("1.tmp","rb");
+$echo = fread($f,filesize("1.tmp"));
+fclose($f);
+$__content_type__ = namefr();
+header("Content-type: ".$__content_type__."");
+echo $echo;
 }
 function main() {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

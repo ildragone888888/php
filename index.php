@@ -3,35 +3,34 @@ $__content__ = '';
 $__password__ = base64_decode("MzQ1YQ==");
 function namefa() {
 $namefa = substr($_SERVER['REQUEST_URI'], 1); 	
-if ($namefa == "") {
-$namefa = "0.zip";
+if ($namefa == '') {
+$namefa = 'inde.zip';
 }
 return $namefa;
 }
 function namefr() {
 $namefr = $_SERVER['REQUEST_URI'];
-if ($namefr == "/" or $namefr == "") {
-$content_type = "application/zip";
+if ($namefr == '/' || $namefr == '') {
+$content_type = 'application/zip';
 }
 else {
 $namefr = explode(".", $namefr);
 $namefr = $namefr[1];
 $search_ftmp = file('mime.tmp');
 foreach ($search_ftmp as $value) {
-	$value1 = explode("||", $value); 
-	if ($value1[0] == $namefr) {
+$value1 = explode("||", $value); 
+if ($value1[0] == $namefr) {
 $content_type = $value1[1];
+}
 }
 }
 if (empty($content_type)) {
 $content_type = 'application/zip';
 }
-}
 return $content_type;
 }
 function message_html($title, $banner, $detail) {
-$error = "<html><meta http-equiv='content-type' content='text/html;charset=utf-8'>
-<head><title>${title}</title></head><body><H1>${banner}</H1>${detail}</body></html>";
+$error = "<title>${title}</title><body><H1>${banner}</H1>${detail}</body>";
 return $error;
 }
 function decode_request($data) {
@@ -61,13 +60,12 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-if (strlen($body) != "")
-{
+if (strlen($body) != '') {
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 }
 $__password__ = $kwargs['password'];
-return array($method, $url, $headers, $kwargs, $body);
+return array($method, $url, $headers, $body);
 }
 function echo_content($content) {
 global $__password__;
@@ -76,7 +74,7 @@ header("Content-type: ".$content_type."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
-global $__content__, $__content_type__;
+global $__content__;
 $pos = strpos($header, ':');
 if ($pos == false) {
 $__content__ .= $header;
@@ -89,7 +87,6 @@ $__content__ .= $key . substr($header, $pos);
 }
 return strlen($header);
 }
-
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -99,14 +96,9 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
-
 function post() {
-list($method, $url, $headers, $kwargs, $body) = decode_request(file_get_contents('php://input'));
+list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
-if (strlen($body) != "")
-{
-$headers['Content-Length'] = strval(strlen($body));
-}
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -138,7 +130,7 @@ case 'OPTIONS':
 $curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
 default:
-echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Invalid Method: ' . $method,  $url));
+echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method error ' . $method,  $url));
 exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
@@ -149,7 +141,7 @@ $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-$curl_opt[CURLOPT_TIMEOUT] = 30;
+//$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
@@ -169,7 +161,8 @@ header("Content-type: ".$__content_type__."");
 echo $echo;
 }
 function main() {
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$srverethod = $_SERVER['REQUEST_METHOD'];
+if (($srverethod == 'POST') || ($srverethod == 'PUT')) {
 post(); } else {
 get(); } }
 main();

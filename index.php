@@ -70,10 +70,8 @@ return array($method, $url, $headers, $body);
 
 function echo_content($content) {
 global $__password__;
-$content_type = namefr();
-$content_typef = nameff();
-header("Content-type: ".$content_type."");
-header("Content-Disposition: attachment; filename=".$content_typef."");
+header("Content-type: ".namefr()."");
+header("Content-Disposition: attachment; filename=".nameff()."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 
@@ -158,22 +156,17 @@ echo_content($GLOBALS['__content__']);
 } 
 curl_close($ch);
 }
-
 function get() {
 $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
-$__content_type__ = namefr();
-$__content_typef__ = nameff();
-header("Content-type: ".$__content_type__."");
-header("Content-Disposition: attachment; filename=".$content_typef."");
+header("Content-type: ".namefr()."");
+header("Content-Disposition: attachment; filename=".nameff()."");
 echo $echo;
 }
-
 function main() {
 $srverethod = $_SERVER['REQUEST_METHOD'];
 if (($srverethod == 'POST') || ($srverethod == 'PUT')) {
 post(); } else {
 get(); } }
-
 main();

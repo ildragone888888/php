@@ -1,12 +1,12 @@
 <?php
 $__content__ = '';
 $__password__ = base64_decode("MzQ1YQ==");
-function namefa() {
-$namefa = substr($_SERVER['REQUEST_URI'], 1); 	
-if ($namefa == '') {
-$namefa = 'zip.zip';
+function nameff() {
+$nameff = substr($_SERVER['REQUEST_URI'], 1); 	
+if ($nameff == '') {
+$nameff = 'zip.zip';
 }
-return $namefa;
+return $nameff;
 }
 
 function namefr() {
@@ -71,7 +71,9 @@ return array($method, $url, $headers, $body);
 function echo_content($content) {
 global $__password__;
 $content_type = namefr();
+$content_typef = nameff();
 header("Content-type: ".$content_type."");
+header("Content-Disposition: attachment; filename=".$content_typef."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 
@@ -162,7 +164,9 @@ $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
 $__content_type__ = namefr();
+$__content_typef__ = nameff();
 header("Content-type: ".$__content_type__."");
+header("Content-Disposition: attachment; filename=".$content_typef."");
 echo $echo;
 }
 

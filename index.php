@@ -4,13 +4,14 @@ $__password__ = base64_decode("MzQ1YQ==");
 function namefa() {
 $namefa = substr($_SERVER['REQUEST_URI'], 1); 	
 if ($namefa == '') {
-$namefa = 'inde.zip';
+$namefa = 'zip.zip';
 }
 return $namefa;
 }
+
 function namefr() {
 $namefr = $_SERVER['REQUEST_URI'];
-if ($namefr == '/' || $namefr == '') {
+if (($namefr == '/') || (empty($content_type))) {
 $content_type = 'application/zip';
 }
 else {
@@ -24,15 +25,14 @@ $content_type = $value1[1];
 }
 }
 }
-if (empty($content_type)) {
-$content_type = 'application/zip';
-}
 return $content_type;
 }
+
 function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title><body><H1>${banner}</H1>${detail}</body>";
 return $error;
 }
+
 function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
@@ -60,19 +60,21 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-if (strlen($body) != '') {
+if (empty($body)) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
+
 function echo_content($content) {
 global $__password__;
 $content_type = namefr();
 header("Content-type: ".$content_type."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
+
 function curl_header_function($ch, $header) {
 global $__content__;
 $pos = strpos($header, ':');
@@ -87,6 +89,7 @@ $__content__ .= $key . substr($header, $pos);
 }
 return strlen($header);
 }
+
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -96,6 +99,7 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
+
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 //if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
@@ -152,6 +156,7 @@ echo_content($GLOBALS['__content__']);
 } 
 curl_close($ch);
 }
+
 function get() {
 $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
@@ -160,9 +165,11 @@ $__content_type__ = namefr();
 header("Content-type: ".$__content_type__."");
 echo $echo;
 }
+
 function main() {
 $srverethod = $_SERVER['REQUEST_METHOD'];
 if (($srverethod == 'POST') || ($srverethod == 'PUT')) {
 post(); } else {
 get(); } }
+
 main();

@@ -60,7 +60,7 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-if (empty($body)) { 
+if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 }

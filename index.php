@@ -138,8 +138,8 @@ echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method
 exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
-//$curl_opt[CURLOPT_RETURNTRANSFER] = true; //false хз убрать
-$curl_opt[CURLOPT_BINARYTRANSFER] = true; //хз
+$curl_opt[CURLOPT_RETURNTRANSFER] = true;
+//$curl_opt[CURLOPT_BINARYTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
@@ -148,7 +148,7 @@ $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
 //$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-//$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
+$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
 curl_close($ch);

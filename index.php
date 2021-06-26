@@ -37,9 +37,8 @@ function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
-$headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); //
+$headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); 
 $headers_data = gzinflate($headers_data);
-$body = substr($data, 2+intval($headers_length));
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
@@ -60,6 +59,7 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
+$body = substr($data, 2+intval($headers_length));
 if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
@@ -138,8 +138,8 @@ echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method
 exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
-$curl_opt[CURLOPT_RETURNTRANSFER] = true;
-$curl_opt[CURLOPT_BINARYTRANSFER] = true;
+//$curl_opt[CURLOPT_RETURNTRANSFER] = true; //false хз убрать
+$curl_opt[CURLOPT_BINARYTRANSFER] = true; //хз
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
@@ -148,13 +148,13 @@ $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
 //$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
+//$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
 curl_setopt_array($ch, $curl_opt);
 curl_exec($ch);
+curl_close($ch);
 if ($GLOBALS['__content__']) {
 echo_content($GLOBALS['__content__']);
 } 
-curl_close($ch);
 }
 function get() {
 $f = fopen ("1.tmp","rb");

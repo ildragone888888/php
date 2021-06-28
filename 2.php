@@ -1,1 +1,1 @@
-echo "123";
+echo file_get_contents('php://input'));

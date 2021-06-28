@@ -56,18 +56,12 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-$body = substr($data, 2+intval($headers_length));
+$__password__ = $kwargs['password'];
+$body = substr($data, 2+$headers_length);
 if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
-$body = gzinflate($body);
-    
-$f = fopen("1.txt","a");
-fwrite($f,$body);
-fwrite($f,"\r\n");
-fclose($f);  
-    
+$body = gzinflate($body);  
 }
-$__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
 

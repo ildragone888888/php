@@ -10,5 +10,6 @@
       <textarea id="msg" name="user_message"></textarea>
     </li>
   </ul>
+  <input type="submit" value="Выбрать">
 </form>
 </body>

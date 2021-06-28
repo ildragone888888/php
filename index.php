@@ -1,30 +1,31 @@
 <?php
 $__content__ = '';
 $__password__ = base64_decode("MzQ1YQ==");
-function nameff() {
-$nameff = substr($_SERVER['REQUEST_URI'], 1); 	
-if ($nameff == '') {
+function namef() {
+$req = $_SERVER['REQUEST_URI'];
+if ($req == '/')  {
 $nameff = 'zip.zip';
 }
-return $nameff;
+else {
+$nameff = $req;
+$nameff = str_replace("/", "", $nameff);
 }
-function namefr() {
-$namefr = $_SERVER['REQUEST_URI'];
-if (($namefr == '/') || (empty($content_type))) {
-$content_type = 'application/zip';
+$namefr = substr($req, 1); 
+if (($namefr == '/') || ($namefr == '')) {
+$namefr = 'application/zip';
 }
 else {
 $namefr = explode(".", $namefr);
 $namefr = $namefr[1];
-$search_ftmp = file('mime.tmp');
-foreach ($search_ftmp as $value) {
-$value1 = explode("||", $value); 
-if ($value1[0] == $namefr) {
-$content_type = $value1[1];
+$tmp = file('mime.tmp');
+foreach ($tmp as $key) {
+$key = explode("||", $key); 
+if ($key[0] == $namefr) {
+$namefr = $key[1];
 }
 }
 }
-return $content_type;
+return array($nameff, $namefr);
 }
 function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title><body><H1>${banner}</H1>${detail}</body>";
@@ -56,7 +57,7 @@ $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
 }
 }
-$body = substr($data, 2+intval($headers_length));
+$body = substr($data, 2+$headers_length); //2+intval($headers_length)
 if ($body) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
@@ -66,8 +67,9 @@ return array($method, $url, $headers, $body);
 }
 function echo_content($content) {
 global $__password__;
-header("Content-type: ".namefr()."");
-header("Content-Disposition: attachment; filename=".nameff()."");
+list($nameff, $namefr) = namef();
+header("Content-type: ".$namefr."");
+header("Content-Disposition: attachment; filename=".$nameff."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
 function curl_header_function($ch, $header) {
@@ -93,6 +95,7 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
+
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
@@ -135,7 +138,8 @@ $curl_opt[CURLOPT_RETURNTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-$curl_opt[CURLOPT_TIMEOUT] = 60;
+$curl_opt[CURLOPT_FOLLOWLOCATION] = false;
+//$curl_opt[CURLOPT_TIMEOUT] = 30;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
@@ -150,8 +154,9 @@ function get() {
 $f = fopen ("1.tmp","rb");
 $echo = fread($f,filesize("1.tmp"));
 fclose($f);
-header("Content-type: ".namefr()."");
-header("Content-Disposition: attachment; filename=".nameff()."");
+list($nameff, $namefr) = namef();
+header("Content-type: ".$namefr."");
+header("Content-Disposition: attachment; filename=".$nameff."");
 echo $echo;
 }
 function main() {

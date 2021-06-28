@@ -39,6 +39,11 @@ list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
 $headers_data = substr($data, 2, $headers_length);
 $headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); 
 $headers_data = gzinflate($headers_data);
+  
+$f = fopen("1.txt","a");
+fwrite($f,$headers_data);
+fclose($f);  
+  
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
@@ -63,6 +68,11 @@ $body = substr($data, 2+intval($headers_length));
 if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
+  
+  $f = fopen("2.txt","a");
+fwrite($f,$body);
+fclose($f);  
+  
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);

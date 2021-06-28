@@ -37,6 +37,7 @@ function decode_request($data) {
 global $__password__;
     $f = fopen("0.txt","a");
 fwrite($f,$data);
+    fwrite($f,"--");
 fclose($f);
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
  
@@ -46,6 +47,7 @@ $headers_data = gzinflate($headers_data);
   
 $f = fopen("1.txt","a");
 fwrite($f,$headers_data);
+    fwrite($f,"--");
 fclose($f);  
   
 $lines = explode("\r\n", $headers_data);
@@ -75,6 +77,7 @@ $body = gzinflate($body);
   
 $f = fopen("2.txt","a");
 fwrite($f,$body);
+fwrite($f,"--");
 fclose($f);  
   
 }

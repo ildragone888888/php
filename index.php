@@ -57,7 +57,7 @@ $headers[$key] = $value;
 }
 }
 $body = substr($data, 2+intval($headers_length));
-if (strlen($body) > 0) { 
+if ($body) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
 }

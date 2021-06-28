@@ -57,20 +57,15 @@ $headers[$key] = $value;
 }
 }
 $body = substr($data, 2+intval($headers_length));
-$f = fopen("0.txt","a");
-fwrite($f,$body);
-fwrite($f,"--");
-fclose($f);  
-    
 if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
     
 $f = fopen("1.txt","a");
 fwrite($f,$body);
-fwrite($f,"--");
+fwrite($f,"\r\n");
 fclose($f);  
-  
+    
 }
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);

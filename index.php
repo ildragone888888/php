@@ -8,7 +8,6 @@ $nameff = 'zip.zip';
 }
 return $nameff;
 }
-
 function namefr() {
 $namefr = $_SERVER['REQUEST_URI'];
 if (($namefr == '/') || (empty($content_type))) {
@@ -27,29 +26,16 @@ $content_type = $value1[1];
 }
 return $content_type;
 }
-
 function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title><body><H1>${banner}</H1>${detail}</body>";
 return $error;
 }
-
 function decode_request($data) {
 global $__password__;
-    $f = fopen("0.txt","a");
-fwrite($f,$data);
-    fwrite($f,"--");
-fclose($f);
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
- 
 $headers_data = substr($data, 2, $headers_length);
 $headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); 
 $headers_data = gzinflate($headers_data);
-  
-$f = fopen("1.txt","a");
-fwrite($f,$headers_data);
-    fwrite($f,"--");
-fclose($f);  
-  
 $lines = explode("\r\n", $headers_data);
 $request_line_items = explode(" ", array_shift($lines));
 $method = $request_line_items[0];
@@ -71,11 +57,16 @@ $headers[$key] = $value;
 }
 }
 $body = substr($data, 2+intval($headers_length));
+$f = fopen("0.txt","a");
+fwrite($f,$body);
+fwrite($f,"--");
+fclose($f);  
+    
 if (strlen($body) > 0) { 
 $body  = $body ^ str_repeat($__password__, strlen($body));
 $body = gzinflate($body);
-  
-$f = fopen("2.txt","a");
+    
+$f = fopen("1.txt","a");
 fwrite($f,$body);
 fwrite($f,"--");
 fclose($f);  
@@ -91,7 +82,6 @@ header("Content-type: ".namefr()."");
 header("Content-Disposition: attachment; filename=".nameff()."");
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
-
 function curl_header_function($ch, $header) {
 global $__content__;
 $pos = strpos($header, ':');
@@ -106,7 +96,6 @@ $__content__ .= $key . substr($header, $pos);
 }
 return strlen($header);
 }
-
 function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
@@ -116,10 +105,9 @@ $__content__ = '';
 echo_content($content);
 return strlen($content);
 }
-
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -156,13 +144,12 @@ exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
 $curl_opt[CURLOPT_RETURNTRANSFER] = true;
-//$curl_opt[CURLOPT_BINARYTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_FAILONERROR] = false;
 $curl_opt[CURLOPT_FOLLOWLOCATION] = false;
-//$curl_opt[CURLOPT_TIMEOUT] = 30;
+$curl_opt[CURLOPT_TIMEOUT] = 60;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;

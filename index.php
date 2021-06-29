@@ -81,7 +81,6 @@ $body = gzinflate($body);
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
-
 function post() {
 global $__password__, $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));

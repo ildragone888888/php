@@ -1,5 +1,6 @@
 <?php
 $__content__ = '';
+$__password__ = base64_decode('MzQ1YQ==');
 function namef() {
 $req = $_SERVER['REQUEST_URI'];
 if (($req == '/') || ($req == '')) {
@@ -20,11 +21,6 @@ $namefr = $key[1];
 }
 }
 return array($nameff, $namefr);
-}
-$__password__ = base64_decode('MzQ1YQ==');
-function message_html($title, $banner, $detail) {
-$error = "<title>${title}</title><body>${banner}</br>${detail}</body>";
-return $error;
 }
 function decode_request($data) {
 global $__password__;
@@ -67,79 +63,60 @@ header('Content-type: '.$namefr.'');
 header('Content-Disposition: attachment; filename='.$nameff.'');
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
-function curl_header_function($ch, $header) {
-global $__content__;
-$pos = strpos($header, ':');
-if ($pos == false) {
-$__content__ .= $header;
-} 
-else {
-$key = join('-', array_map('ucfirst', explode('-', substr($header, 0, $pos))));
-if ($key != 'Transfer-Encoding') {
-$__content__ .= $key . substr($header, $pos);
-}
-}
-return strlen($header);
-}
-function curl_write_function($ch, $content) {
-global $__content__;
-if ($__content__) {
-echo_content($__content__);
-$__content__ = '';
-}
-echo_content($content);
-return strlen($content);
-}
 function post() {
+global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
-$curl_opt = array();
-$ch = curl_init();
-$curl_opt[CURLOPT_URL] = $url;
-switch ($method) { //
-case 'HEAD':
-$curl_opt[CURLOPT_NOBODY] = true;
-break;
-case 'GET':
-break;
-case 'POST':
-$curl_opt[CURLOPT_POST] = true;
-$curl_opt[CURLOPT_POSTFIELDS] = $body;
-break;
-case 'DELETE':
-case 'PATCH':
-$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
-$curl_opt[CURLOPT_POSTFIELDS] = $body;
-break;
-case 'PUT':
-$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
-$curl_opt[CURLOPT_POSTFIELDS] = $body;
-$curl_opt[CURLOPT_NOBODY] = true; 
-break;
-case 'OPTIONS':
-$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
-break;
-default:
-echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method error ' . $method,  $url));
-exit(-1);
+$header = array();
+$headerin['method'] = $method;
+$headerout = '';
+foreach ($header_array as $key => $value) {
+$value = explode(":",$value);
+$headerout .= "".$value[0].":".$value[1]."\r\n";
 }
-$curl_opt[CURLOPT_HTTPHEADER] = $header_array;
-$curl_opt[CURLOPT_RETURNTRANSFER] = true;
-$curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
-$curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-$curl_opt[CURLOPT_TIMEOUT] = 60;
-$curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
-$curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
-$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
-curl_setopt_array($ch, $curl_opt);
-curl_exec($ch);
-curl_close($ch);
-if ($GLOBALS['__content__']) {
-echo_content($GLOBALS['__content__']);
+$headerin['header'] = $headerout;
+if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEAD'))) {
+$headerin['content'] = $body;
+}
+$ht = parse_url($url);
+$ht = $ht['scheme'];
+$stcocr = array($ht => $headerin);
+$context  = stream_context_create($stcocr);
+$req = file_get_contents($url, false, $context); 
+$httpresh = $http_response_header;
+$idd = 1;
+foreach ($httpresh as $value) {
+$pos = strpos($value, ':');
+if (($pos == false) && ($idd == 1)) {
+$__content__ .= $value;
+$__content__ .= "\r\n";
+$idd++;
+}
+else if ($pos == false) {
+break;
+} 
+else {
+$key = join('-', array_map('ucfirst', explode('-', substr($value, 0, $pos))));
+if ($key != 'Transfer-Encoding') {
+$__content__ .= $key . substr($value, $pos);
+$__content__ .= "\r\n";
+}
+}
+}
+$__content__ .= "\r\n";
+$postemp = strpos($__content__, '3');	
+if ($postemp != 9) {
+	$__content__ .= $req;
+}
+else {
+$__content__ .= "Location 3XX";
+}
+if ($__content__) {
+echo_content($__content__);
 } 
 }
 function get() {

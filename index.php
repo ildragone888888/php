@@ -1,4 +1,15 @@
 <?php
+function prepareHeaders($headers) {
+$flattened = array();
+foreach ($headers as $key => $header) {
+if (is_int($key)) {
+$flattened[] = $header;
+} else {
+$flattened[] = $key.': '.$header;
+}
+}
+return implode("\r\n", $flattened);
+}
 $__content__ = '';
 function namef() {
 $req = $_SERVER['REQUEST_URI'];
@@ -67,18 +78,21 @@ header('Content-type: '.$namefr.'');
 header('Content-Disposition: attachment; filename='.$nameff.'');
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
+
 function post() {
 global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-$headers = array();
-$headers['method'] = $method;
-$headers['follow_location'] = false;
+
+$header = array();
+$header['method'] = $method;
+$header['follow_location'] = false;
 if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEAD')))
 {
-$headers['content'] = $body;
+$header['content'] = $body;
 }
-$header = array('http' => $headers);
-$context  = stream_context_create($header);
+$header['header'] = prepareHeaders($headers);
+$headersin = array('http' => $header);
+$context  = stream_context_create($headersin);
 $freq = file_get_contents($url, false, $context); 
 $i = 1;
 foreach ($http_response_header as $key) {

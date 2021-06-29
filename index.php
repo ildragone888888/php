@@ -79,7 +79,6 @@ $__content__ .= "\r\n";
 }
  
 $pos0 = strpos($__content__, '3');
- 
 if ($pos0 == 9)
 {
 $pos1 = strpos($__content__, 'HTTP/1.0 2');

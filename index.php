@@ -95,7 +95,7 @@ if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEA
 {
 $header['content'] = $body;
 }
-$header['header'] = prepareHeaders($headers);
+$header['header'] = prhe($headers);
 $headersin = array('https' => $header);
 $context  = stream_context_create($headersin);
 $freq = file_get_contents($url, false, $context); 

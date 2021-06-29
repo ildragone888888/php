@@ -97,6 +97,12 @@ $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
+  
+$f = fopen("1.txt","a");
+fwrite($f, $body);
+fwrite($f,"------");
+fclose($f);
+  
 $curl_opt = array();
 $ch = curl_init();
 $curl_opt[CURLOPT_URL] = $url;

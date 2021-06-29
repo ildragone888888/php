@@ -95,7 +95,7 @@ if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEA
 {
 $header['content'] = $body;
 }
-$header['follow_location'] = false;
+$header['follow_location'] = 0;
 $ht = parse_url($url);
 $ht = $ht['scheme'];
 $headersin = array($ht => $header);
@@ -114,11 +114,20 @@ $__content__ .= "".$key1[0]." : ".$key1[1]."\r\n";
 }
 $i++;
 }
-$pos0 = stripos($__content__, '301');
+if ($ht = 'https')
+{
+$pos0 = stripos($__content__, '3');
 if ($pos0 == 9)
 {
+$pos1 = stripos($__content__, 'HTTP/1.0 2');
+if ($pos1 == 0)
+{
 $pos1 = stripos($__content__, 'HTTP/1.1 2');
+}
 $__content__ = substr($__content__, 0, $pos1);
+}
+}
+}
 }
 if (($pos0 != 9) && (($method != 'PUT') || ($method != 'HEAD')))
 {

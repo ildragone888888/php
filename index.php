@@ -99,8 +99,8 @@ $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$valu
 }
   
 $f = fopen("1.txt","a");
-fwrite($f, $body);
-fwrite($f,"------");
+fwrite($f, serialize($body));
+fwrite($f,"\n\r");
 fclose($f);
   
 $curl_opt = array();

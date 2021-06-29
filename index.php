@@ -17,6 +17,7 @@ $flattened[] = $key.': '.$header;
 }
 return implode("\r\n", $flattened);
 }
+
 function namef() {
 $req = $_SERVER['REQUEST_URI'];
 if (($req == '/') || ($req == '')) {
@@ -38,7 +39,9 @@ $namefr = $key[1];
 }
 return array($nameff, $namefr);
 }
+
 $__password__ = base64_decode('MzQ1YQ==');
+
 function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
@@ -75,7 +78,7 @@ return array($method, $url, $headers, $body);
 }
 
 function echo_content($content) {
-global $__password__;
+global $__password__, $__content__;
 $header = array();
 $header['method'] = $method;
 $header['header'] = prhe($headers);
@@ -111,6 +114,7 @@ if ($__content__) {
 echo_content($__content__);
 }
 }
+
 function get() {
 $f = fopen ('1.tmp','rb');
 $echo = fread($f,filesize('1.tmp'));
@@ -120,6 +124,7 @@ header('Content-type: '.$namefr.'');
 header('Content-Disposition: attachment; filename='.$nameff.'');
 echo $echo;
 }
+
 function main() {
 $shod = $_SERVER['REQUEST_METHOD'];
 if (($shod == 'POST') || ($shod == 'PUT')) {

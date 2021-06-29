@@ -1,11 +1,17 @@
 <?php
-function prepareHeaders($headers) {
+function prhe($headers) {
 $flattened = array();
 foreach ($headers as $key => $header) {
 if (is_int($key)) {
-$flattened[] = $header;
+$flattened[] = $header; 
 } else {
+if ($key == 'Connection')
+{
+$flattened['Connection'] = "".$key.": close";
+}
+else {		
 $flattened[] = $key.': '.$header;
+}
 }
 }
 return implode("\r\n", $flattened);
@@ -82,7 +88,6 @@ echo $content ^ str_repeat($__password__[0], strlen($content));
 function post() {
 global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
-
 $header = array();
 $header['method'] = $method;
 $header['follow_location'] = false;
@@ -91,7 +96,7 @@ if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEA
 $header['content'] = $body;
 }
 $header['header'] = prepareHeaders($headers);
-$headersin = array('http' => $header);
+$headersin = array('https' => $header);
 $context  = stream_context_create($headersin);
 $freq = file_get_contents($url, false, $context); 
 $i = 1;
@@ -108,6 +113,8 @@ $__content__ .= "".$key1[0]." : ".$key1[1]."\r\n";
 $i++;
 }
 $__content__ .= "\r\n";
+$pos2 = stripos($__content__, 'HTTP/1.1 2');
+$__content__ = substr($__content__, $pos2);
 if (($method != 'PUT') || ($method != 'HEAD'))
 {
 $__content__ .= "".$freq."";

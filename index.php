@@ -90,20 +90,22 @@ global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $header = array();
 $header['method'] = $method;
-$header['follow_location'] = false;
+$header['header'] = prhe($headers);
 if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEAD')))
 {
 $header['content'] = $body;
 }
-$header['header'] = prhe($headers);
-$headersin = array('https' => $header);
+$header['follow_location'] = false;
+$ht = parse_url($url);
+$ht = $ht['scheme'];
+$headersin = array($ht => $header);
 $context  = stream_context_create($headersin);
 $freq = file_get_contents($url, false, $context); 
 $i = 1;
 foreach ($http_response_header as $key) {
 if ($i = 1)
 {
-$__content__ .= "".$key."\n";
+$__content__ .= "".$key."\r\n";
 }
 else
 {
@@ -112,12 +114,15 @@ $__content__ .= "".$key1[0]." : ".$key1[1]."\r\n";
 }
 $i++;
 }
-$__content__ .= "\r\n";
-$pos2 = stripos($__content__, 'HTTP/1.1 2');
-$__content__ = substr($__content__, $pos2);
-if (($method != 'PUT') || ($method != 'HEAD'))
+$pos0 = stripos($__content__, '301');
+if ($pos0 == 9)
 {
-$__content__ .= "".$freq."";
+$pos1 = stripos($__content__, 'HTTP/1.1 2');
+$__content__ = substr($__content__, 0, $pos1);
+}
+if (($pos0 != 9) && (($method != 'PUT') || ($method != 'HEAD')))
+{
+$__content__ .= "\r\n".$freq."";
 }
 if ($__content__) {
 echo_content($__content__);

@@ -82,8 +82,9 @@ $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
 
-function post($method, $url, $headers, $body) {
+function post() {
 global $__password__, $__content__;
+list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $header = array();
 $header['method'] = $method;
 $header['header'] = prhe($headers);

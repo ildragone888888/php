@@ -89,15 +89,18 @@ function post() {
 global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 
+$header = array();
 $header['method'] = $method;
+$header['verify_peer'] = false;
+$header['verify_peer_name'] = false;
+$header['follow_location'] = false;
 $header['header'] = prhe($headers);
 if (($body) && (($method != 'OPTIONS') || ($method != 'GET') || ($method != 'HEAD'))) {
 $header['content'] = $body;
 }
-$header['follow_location'] = false;
 $ht = parse_url($url);
 $ht = $ht['scheme'];
-$headersin = array($ht => $header);
+$headersin = array('ssl' => $header);
 $context  = stream_context_create($headersin);
 $freq = file_get_contents($url, false, $context); 
 $httpresh = $http_response_header;
@@ -122,7 +125,8 @@ $pos1 = strpos($__content__, 'HTTP/1.1 2');
 }
 $__content__ = substr($__content__, 0, $pos1);
 }
-if ((($pos0 != 9) && ($ht == 'https')) && (($method != 'PUT') || ($method != 'HEAD'))) {
+if (($pos0 != 9) && (($method != 'PUT') || ($method != 'HEAD')))
+{
 $__content__ .= "\r\n".$freq."";
 }
 

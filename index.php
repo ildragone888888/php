@@ -39,9 +39,14 @@ $namefr = $key[1];
 }
 return array($nameff, $namefr);
 }
-
 $__password__ = base64_decode('MzQ1YQ==');
-
+function echo_content($content) {
+global $__password__;
+list($nameff, $namefr) = namef();
+header('Content-type: '.$namefr.'');
+header('Content-Disposition: attachment; filename='.$nameff.'');
+echo $content ^ str_repeat($__password__[0], strlen($content));
+}
 function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
@@ -77,7 +82,7 @@ $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
 
-function echo_content($content) {
+function post($method, $url, $headers, $body) {
 global $__password__, $__content__;
 $header = array();
 $header['method'] = $method;
@@ -114,7 +119,6 @@ if ($__content__) {
 echo_content($__content__);
 }
 }
-
 function get() {
 $f = fopen ('1.tmp','rb');
 $echo = fread($f,filesize('1.tmp'));
@@ -124,7 +128,6 @@ header('Content-type: '.$namefr.'');
 header('Content-Disposition: attachment; filename='.$nameff.'');
 echo $echo;
 }
-
 function main() {
 $shod = $_SERVER['REQUEST_METHOD'];
 if (($shod == 'POST') || ($shod == 'PUT')) {

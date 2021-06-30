@@ -1,4 +1,4 @@
-<?php //https://imgjpgto.herokuapp.com/
+<?php
 $__content__ = '';
 function namef() {
 $req = $_SERVER['REQUEST_URI'];

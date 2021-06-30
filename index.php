@@ -81,11 +81,8 @@ $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$valu
 }
 $headerin = array();
 $headerin['method'] = $method;
-$headerin['max_redirects'] = 0;
+$headerin['max_redirects'] = 1;
 $headerin['ignore_errors'] = 1;
-$headerin['verify_peer'] = 0;
-$headerin['verify_peer_name'] = 0;
-$headerin['timeout'] = 59.5;
 $headerin['header'] = $header_array;
 if (($body) && (($method == 'POST') ||  ($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT'))) {
 $headerin['content'] = $body;
@@ -103,10 +100,8 @@ if ($pos == false) {
 if ($id > 1) {
 $__content__ .= "\r\n";
 }
-$value = explode(" ",$value);
-$value = "".$value[0]." ".$value[1]."";
-$value = str_replace("HTTP/1.0","HTTP/2",$value);
-$value = str_replace("HTTP/1.1","HTTP/2",$value);
+//$value = explode(" ",$value);
+//$value = "".$value[0]." ".$value[1]."";
 $__content__ .= $value;
 $__content__ .= "\r\n";
 }
@@ -147,4 +142,3 @@ if (($shod == 'POST') || ($shod == 'PUT')) {
 post(); } else {
 get(); } }
 main();
-

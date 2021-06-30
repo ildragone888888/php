@@ -130,7 +130,7 @@ $__content__ .= $strea;
 }
 } 
 if ($__content__) {
-echo_content($__content__)
+echo_content($__content__);
 }
 }
 

@@ -70,9 +70,6 @@ $method = strtoupper($method);
 if (isset($headers['Connection'])) { 
 $headers['Connection'] = 'close'; 
 }
-if (isset($headers['Host'])) { 
-unset($headers['Host']);
-}
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -81,11 +78,11 @@ $headerin = array();
 $headerin['method'] = $method;
 $headerin['max_redirects'] = 0;
 $headerin['ignore_errors'] = 1;
-$headerin['verify_peer'] = false;
-$headerin['verify_peer_name'] = false;
+$headerin['verify_peer'] = 0;
+$headerin['verify_peer_name'] = 0;
 $headerin['timeout'] = 59.5;
 $headerin['header'] = $header_array;
-if (($body) && (($method == 'POST') || ($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT'))) {
+if (($body) && (($method == 'POST') ||  ($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT'))) {
 $headerin['content'] = $body;
 }
 $ht = parse_url($url); 
@@ -96,9 +93,17 @@ if ($stream = @fopen($url, 'r', false, $context)) {
 $strea = stream_get_contents($stream, -1);
 $httpresh = stream_get_meta_data($stream);
 $httpresh = $httpresh['wrapper_data'];
+$id = 1;
+$id = 0;
 foreach ($httpresh as $value) {
 $pos = strpos($value, ':');
 if ($pos == false) {
+if ($id > 1) {
+$er = 1;
+break;
+$__content__ .= "\r\n";
+
+}
 $__content__ .= $value;
 $__content__ .= "\r\n";
 }
@@ -109,11 +114,15 @@ $__content__ .= $key . substr($value, $pos);
 $__content__ .= "\r\n";
 }
 }
+$id++;
 }
 $__content__ .= "\r\n";
 if (($method != 'HEAD') || ($method != 'PUT'))
 {
+if ($er != 1)
+{
 $__content__ .= $strea;
+}
 }
 fclose($stream);
 }

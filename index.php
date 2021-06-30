@@ -22,6 +22,10 @@ $namefr = $key[1];
 return array($nameff, $namefr);
 }
 $__password__ = base64_decode('MzQ1YQ==');
+function message_html($title, $banner, $detail) {
+$error = "<title>${title}</title><body>${banner}</br>${detail}</body>";
+return $error;
+}
 function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
@@ -42,7 +46,7 @@ $pair = explode(':', $line, 2);
 $key  = $pair[0];
 $value = trim($pair[1]);
 if (stripos($key, $kwargs_prefix) === 0) {
-$kwargs[substr($key, strlen($kwargs_prefix))] = $value;  
+$kwargs[substr($key, strlen($kwargs_prefix))] = $value; //
 } else if ($key) {
 $key = join('-', array_map('ucfirst', explode('-', $key)));
 $headers[$key] = $value;
@@ -67,6 +71,7 @@ function post() {
 global $__content__;
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $method = strtoupper($method);
+if (($method == 'GET') || ($method == 'POST') || ($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT') || ($method == 'HEAD') || ($method == 'OPTIONS')) {
 if (isset($headers['Connection'])) { 
 $headers['Connection'] = 'close'; 
 }
@@ -89,16 +94,14 @@ $ht = parse_url($url);
 $ht = $ht['scheme'];
 $stcocr = array($ht => $headerin);
 $context = stream_context_create($stcocr);
-if ($stream = @fopen($url, 'r', false, $context)) {
-$strea = stream_get_contents($stream, -1);
-$httpresh = stream_get_meta_data($stream);
-$httpresh = $httpresh['wrapper_data'];
+$strea = file_get_contents($url, false, $context);
+$httpresh = $http_response_header;
 $id = 1;
 foreach ($httpresh as $value) {
 $pos = strpos($value, ':');
 if ($pos == false) {
 if ($id > 1) {
-$__content__ .= "\r\n";	
+$__content__ .= "\r\n";
 }
 $__content__ .= $value;
 $__content__ .= "\r\n";
@@ -113,15 +116,14 @@ $__content__ .= "\r\n";
 $id++;
 }
 $__content__ .= "\r\n";
-if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS'))
-{
+if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS')) {
 $__content__ .= $strea;
 }
-fclose($stream);
 }
-if ($__content__) {
-echo_content($__content__);
+else {
+echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method error ' . $method,  $url));
 }
+$__content__ = '';
 }
 function get() {
 $f = fopen ('1.tmp','rb');

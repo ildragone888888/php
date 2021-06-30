@@ -1,4 +1,4 @@
-<?php //https://imgjpgto.herokuapp.com/
+<?php 
 $__content__ = '';
 function namef() {
 $req = $_SERVER['REQUEST_URI'];
@@ -131,6 +131,7 @@ $curl_opt[CURLOPT_RETURNTRANSFER] = true;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
 $curl_opt[CURLOPT_TIMEOUT] = 60;
+$curl_opt[CURLOPT_FOLLOWLOCATION] = true;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;

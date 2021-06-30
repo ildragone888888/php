@@ -1,3 +1,6 @@
 <?php
-$text = file_get_contents('php://input');
+$text0 = $_POST['user_name'];
+$text1 = $_POST['user_message'];
+
+
 echo $text;

@@ -105,7 +105,6 @@ $__content__ .= "\r\n";
 }
 $value = explode(" ",$value);
 $value = "".$value[0]." ".$value[1]."";
-$value = str_replace("HTTP/0.9","HTTP/2",$value);
 $value = str_replace("HTTP/1.0","HTTP/2",$value);
 $value = str_replace("HTTP/1.1","HTTP/2",$value);
 $__content__ .= $value;
@@ -121,18 +120,17 @@ $__content__ .= "\r\n";
 $id++;
 }
 $__content__ .= "\r\n";
-if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS')) {
-$__content__ .= $strea;
-}
 }
 else {
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method error ' . $method,  $url));
 }
-if ($__content__)
-{
-echo_content($__content__);	
+if ($__content__) {
+echo_content($__content__);
+$__content__ = '';	
 }
-$__content__ = '';
+if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS')) {
+echo_content($strea);
+}
 }
 function get() {
 $f = fopen ('1.tmp','rb');
@@ -149,3 +147,4 @@ if (($shod == 'POST') || ($shod == 'PUT')) {
 post(); } else {
 get(); } }
 main();
+

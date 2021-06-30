@@ -85,7 +85,7 @@ $headerin['verify_peer'] = false;
 $headerin['verify_peer_name'] = false;
 $headerin['timeout'] = 59.5;
 $headerin['header'] = $header_array;
-if (($body) && (($method == 'POST') ||  (($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT'))) {
+if (($body) && (($method == 'POST') || ($method == 'PATCH') || ($method == 'DELETE') || ($method == 'PUT'))) {
 $headerin['content'] = $body;
 }
 $ht = parse_url($url); 

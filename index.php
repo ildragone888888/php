@@ -123,14 +123,17 @@ $__content__ .= "\r\n";
 $id++;
 }
 $__content__ .= "\r\n";
-if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS'))
-{
-if ($er != 1)
-{
-if ($__content__) {
-echo_content($__content__);
-} 
+if (($method == 'GET') || ($method == 'POST') || ($method == 'DELETE') || ($method == 'PATCH') || ($method == 'OPTIONS')) {
+if ($er != 1) {
+$__content__ .= $strea;
 }
+}
+} 
+if ($__content__) {
+echo_content($__content__)
+}
+}
+
 function get() {
 $f = fopen ('1.tmp','rb');
 $echo = fread($f,filesize('1.tmp'));

@@ -103,6 +103,11 @@ if ($pos == false) {
 if ($id > 1) {
 $__content__ .= "\r\n";
 }
+$value = explode(" ",$value);
+$value = "".$value[0]." ".$value[1]."";
+$value = str_replace("HTTP/0.9","HTTP/2",$value);
+$value = str_replace("HTTP/1.0","HTTP/2",$value);
+$value = str_replace("HTTP/1.1","HTTP/2",$value);
 $__content__ .= $value;
 $__content__ .= "\r\n";
 }

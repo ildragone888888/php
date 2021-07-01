@@ -102,7 +102,7 @@ return strlen($content);
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $method = strtoupper($method);
-//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -148,12 +148,15 @@ $stcocr = array('http' => $headerin);
 $context = stream_context_create($stcocr);
 $strea = @file_get_contents($url, false, $context);
 if ($strea === false) {
-echo_content("HTTP/1.0 404\r\n\r\n" . message_html('404', $method,  $url));
+echo_content("HTTP/1.1 404\r\n\r\n" . message_html('404', $method,  $url));
 exit(-1);
 }
 $ii = 0;
 foreach ($http_response_header as $value) {
-//if ($ii == 0) { $value = str_replace("HTTP/1.1","HTTP/2",$value); }
+if ($ii == 0) { 
+$value = str_replace("HTTP/1.1","HTTP/2",$value); 
+//$value = str_replace("HTTP/1.0","HTTP/2",$value); 
+}
 $value = "".$value."\r\n";
 header_function($value);
 $ii++;

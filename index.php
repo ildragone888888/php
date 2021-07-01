@@ -140,7 +140,6 @@ exit(-1);
 $headerin['protocol_version'] = 1.1;
 $headerin['ignore_errors'] = 1;
 $headerin['follow_location'] = false;
-$headerin['timeout'] = 50.5;
 $headerin['header'] = $header_array;
 $ht = parse_url($url); 
 $ht = $ht['scheme'];
@@ -154,8 +153,7 @@ exit(-1);
 $ii = 0;
 foreach ($http_response_header as $value) {
 if ($ii == 0) { 
-$value = str_replace("HTTP/1.1","HTTP/2",$value); 
-//$value = str_replace("HTTP/1.0","HTTP/2",$value); 
+$value = str_replace("HTTP/1.0","HTTP/1.1",$value);  
 }
 $value = "".$value."\r\n";
 header_function($value);

@@ -153,7 +153,8 @@ exit(-1);
 $ii = 0;
 foreach ($http_response_header as $value) {
 if ($ii == 0) { 
-$value = str_replace("HTTP/1.0","HTTP/1.1",$value);  
+$value = str_replace("HTTP/1.0","HTTP/1.1",$value); 
+$value = str_replace("HTTP/1.1","HTTP/2",$value);  
 }
 $value = "".$value."\r\n";
 header_function($value);

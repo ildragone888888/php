@@ -1,4 +1,4 @@
-<?php
+<?php //https://imgjpgto.herokuapp.com/
 $__content__ = '';
 function namef() {
 $req = $_SERVER['REQUEST_URI'];
@@ -26,7 +26,6 @@ function message_html($title, $banner, $detail) {
 $error = "<title>${title}</title><body>${banner}</br>${detail}</body>";
 return $error;
 }
-
 function decode_request($data) {
 global $__password__;
 list($headers_length) = array_values(unpack('n', substr($data, 0, 2)));
@@ -34,7 +33,7 @@ $headers_data = substr($data, 2, $headers_length);
 $headers_data  = $headers_data ^ str_repeat($__password__, strlen($headers_data)); 
 $headers_data = gzinflate($headers_data);
 $lines = explode("\r\n", $headers_data); 
-$request_line_items = explode(" ", array_shift($lines));
+$request_line_items = explode(' ', array_shift($lines)); //
 $method = $request_line_items[0];
 $url = $request_line_items[1];
 $headers = array();
@@ -61,7 +60,6 @@ $body = gzinflate($body);
 $__password__ = $kwargs['password'];
 return array($method, $url, $headers, $body);
 }
-
 function echo_content($content) {
 global $__password__;
 list($nameff, $namefr) = namef();
@@ -69,8 +67,7 @@ header('Content-type: '.$namefr.'');
 header('Content-Disposition: attachment; filename='.$nameff.'');
 echo $content ^ str_repeat($__password__[0], strlen($content));
 }
-
-function header_function($header) {
+function curl_header_function($ch, $header) {
 global $__content__;
 $pos = strpos($header, ':');
 if ($pos == false) {
@@ -84,21 +81,15 @@ $__content__ .= $key . substr($header, $pos);
 }
 return strlen($header);
 }
-
-function write_function($content,$nobody) {
+function curl_write_function($ch, $content) {
 global $__content__;
 if ($__content__) {
-$__content__ = "".$__content__."\r\n";
 echo_content($__content__);
 $__content__ = '';
 }
-if ($nobody == 0)
-{
 echo_content($content);
-}
 return strlen($content);
 }
-
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $method = strtoupper($method);
@@ -107,52 +98,51 @@ $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
 }
-$headerin = array();
-$nobody = 0;
+$curl_opt = array();
+$curl_opt[CURLOPT_URL] = $url;
 switch (strtoupper($method)) { 
 case 'HEAD':
-$headerin['method'] = $method;
-$nobody = 1;
+$curl_opt[CURLOPT_NOBODY] = true;
 break;
 case 'GET':
 break;
 case 'POST':
-$headerin['method'] = $method;
-$headerin['content'] = $body;
+$curl_opt[CURLOPT_POST] = true;
+$curl_opt[CURLOPT_POSTFIELDS] = $body;
 break;
 case 'DELETE':
 case 'PATCH':
-$headerin['method'] = $method;
-$headerin['content'] = $body;
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
+$curl_opt[CURLOPT_POSTFIELDS] = $body;
 break;
 case 'PUT':
-$headerin['method'] = $method;
-$headerin['content'] = $body; 
-$nobody = 1;
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
+$curl_opt[CURLOPT_POSTFIELDS] = $body;
+$curl_opt[CURLOPT_NOBODY] = true; 
 break;
 case 'OPTIONS':
-$headerin['method'] = $method;
+$curl_opt[CURLOPT_CUSTOMREQUEST] = $method;
 break;
 default:
 echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method error ' . $method,  $url));
 exit(-1);
 }
-$headerin['header'] = $header_array;
-$ht = parse_url($url); 
-$ht = $ht['scheme'];
-$stcocr = array($ht => $headerin);
-$context = stream_context_create($stcocr);
-$strea = @file_get_contents($url, false, $context);
-if ($strea === false)
-{
-echo_content("HTTP/1.0 404\r\n\r\n" . message_html('404', $method,  $url));
-exit(-1);
-}
-foreach ($http_response_header as $value) {
-$value = "".$value."\r\n";
-header_function("$value");
-}
-write_function("$strea", $nobody);
+$curl_opt[CURLOPT_HTTPHEADER] = $header_array;
+$curl_opt[CURLOPT_RETURNTRANSFER] = true;
+$curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
+$curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
+$curl_opt[CURLOPT_FOLLOWLOCATION]  = true;
+$curl_opt[CURLOPT_TIMEOUT] = 60;
+$curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
+$curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
+$curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
+$ch = curl_init();
+curl_setopt_array($ch, $curl_opt);
+curl_exec($ch);
+curl_close($ch);
+if ($GLOBALS['__content__']) {
+echo_content($GLOBALS['__content__']);
+} 
 }
 function get() {
 $f = fopen ('1.tmp','rb');

@@ -138,22 +138,25 @@ echo_content("HTTP/1.0 502\r\n\r\n" . message_html('502 Urlfetch Error', 'Method
 exit(-1);
 }
 $headerin['protocol_version'] = 1.1;
+$headerin['ignore_errors'] = 1;
 $headerin['follow_location'] = false;
+$headerin['timeout'] = 50.5;
 $headerin['header'] = $header_array;
 $ht = parse_url($url); 
 $ht = $ht['scheme'];
 $stcocr = array('http' => $headerin);
 $context = stream_context_create($stcocr);
-$strea = @file_get_contents($url, false, $context);
-if ($strea === false)
-{
+//$strea = @file_get_contents($url, false, $context);
+$strea1 = fopen($url, 'rb', false, $context);
+$strea = fread($strea1, 1000000);
+ 
+if ($strea === false) {
 echo_content("HTTP/1.0 404\r\n\r\n" . message_html('404', $method,  $url));
 exit(-1);
 }
 $ii = 0;
 foreach ($http_response_header as $value) {
 //if ($ii == 0) {
-//$value = str_replace("HTTP/1.0","HTTP/2",$value);
 //$value = str_replace("HTTP/1.1","HTTP/2",$value);
 //}
 $value = "".$value."\r\n";

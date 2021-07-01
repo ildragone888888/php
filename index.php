@@ -146,10 +146,7 @@ $ht = parse_url($url);
 $ht = $ht['scheme'];
 $stcocr = array('http' => $headerin);
 $context = stream_context_create($stcocr);
-//$strea = @file_get_contents($url, false, $context);
-$strea1 = fopen($url, 'rb', false, $context);
-$strea = fread($strea1, 1000000);
- 
+$strea = @file_get_contents($url, false, $context);
 if ($strea === false) {
 echo_content("HTTP/1.0 404\r\n\r\n" . message_html('404', $method,  $url));
 exit(-1);
@@ -163,9 +160,8 @@ $ii++;
 }
 $ii = 0;
 write_function($strea, $nobody);
-fclose($strea1);
 }
-
+ 
 function get() {
 $f = fopen ('1.tmp','rb');
 $echo = fread($f,filesize('1.tmp'));

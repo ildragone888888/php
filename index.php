@@ -102,7 +102,7 @@ return strlen($content);
 function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 $method = strtoupper($method);
-if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
+//if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
 foreach ($headers as $key => $value) {
 $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
@@ -156,16 +156,16 @@ exit(-1);
 }
 $ii = 0;
 foreach ($http_response_header as $value) {
-//if ($ii == 0) {
-//$value = str_replace("HTTP/1.1","HTTP/2",$value);
-//}
+//if ($ii == 0) { $value = str_replace("HTTP/1.1","HTTP/2",$value); }
 $value = "".$value."\r\n";
-header_function("$value");
+header_function($value);
 $ii++;
 }
 $ii = 0;
-write_function("$strea", $nobody);
+write_function($strea, $nobody);
+fclose($strea1);
 }
+
 function get() {
 $f = fopen ('1.tmp','rb');
 $echo = fread($f,filesize('1.tmp'));

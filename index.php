@@ -150,10 +150,17 @@ if ($strea === false)
 echo_content("HTTP/1.0 404\r\n\r\n" . message_html('404', $method,  $url));
 exit(-1);
 }
+$ii = 0;
 foreach ($http_response_header as $value) {
+if ($ii == 0) {
+$value = str_replace("HTTP/1.0","HTTP/2",$value);
+$value = str_replace("HTTP/1.1","HTTP/2",$value);
+}
 $value = "".$value."\r\n";
 header_function("$value");
+$ii++;
 }
+$ii = 0;
 write_function("$strea", $nobody);
 }
 function get() {

@@ -94,9 +94,9 @@ function post() {
 list($method, $url, $headers, $body) = decode_request(file_get_contents('php://input'));
 if (isset($headers['Connection'])) { $headers['Connection'] = 'close'; }
 $header_array = array();
-foreach ($headers as $key => $value) {
-$header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
-}
+    foreach ($headers as $key => $value) {
+        $header_array[] = join('-', array_map('ucfirst', explode('-', $key))).': '.$value;
+    }
 $curl_opt = array();
 $ch = curl_init();
 $curl_opt[CURLOPT_URL] = $url;
@@ -129,10 +129,13 @@ exit(-1);
 }
 $curl_opt[CURLOPT_HTTPHEADER] = $header_array;
 $curl_opt[CURLOPT_RETURNTRANSFER] = true;
+$curl_opt[CURLOPT_BINARYTRANSFER] = true;
 $curl_opt[CURLOPT_HEADER] = false;
 $curl_opt[CURLOPT_HEADERFUNCTION] = 'curl_header_function';
 $curl_opt[CURLOPT_WRITEFUNCTION]  = 'curl_write_function';
-$curl_opt[CURLOPT_TIMEOUT] = 60;
+$curl_opt[CURLOPT_FAILONERROR]    = false;
+$curl_opt[CURLOPT_FOLLOWLOCATION] = false;
+$curl_opt[CURLOPT_TIMEOUT] = 40;
 $curl_opt[CURLOPT_SSL_VERIFYPEER] = false;
 $curl_opt[CURLOPT_SSL_VERIFYHOST] = false;
 $curl_opt[CURLOPT_IPRESOLVE] = CURL_IPRESOLVE_V4;
